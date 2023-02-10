@@ -1,0 +1,42 @@
+@import "breakpoints";
+@import "functions";
+
+// Mobile View (0 to 576px)
+@include xs-breakpoint{
+  h1 {
+    font-size: getRem(32);
+  }
+  h2 {
+    font-size: getRem(24);
+  }
+  h3 {
+    font-size: getRem(20);
+  }
+}
+
+// Tablet View (577px to 768px)
+@include sm-breakpoint{
+  h1 {
+    font-size: getRem(36);
+  }
+  h2 {
+    font-size: getRem(28);
+  }
+  h3 {
+    font-size: getRem(22);
+  }
+}
+
+// Desktop View (769px and above)
+@include md-breakpoint{
+  h1 {
+    font-size: getRem(40);
+  }
+  h2 {
+    font-size: getRem(32);
+  }
+  h3 {
+    font-size: getRem(24);
+  }
+}
+

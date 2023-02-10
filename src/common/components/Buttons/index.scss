@@ -1,0 +1,24 @@
+@import "@styles/base";
+
+.button {
+  background-color: $backgroundSecondary;
+  border-radius: getRem(15);
+  border-width: 0;
+  color: $contentText;
+  width: getRem(70);
+  height: getRem(30);
+  font-size: getRem(10);
+  cursor: pointer;
+
+  &:hover{
+    border-width: getRem(1);
+    border-color: $backgroundSecondary;
+    background-color: $contentTextSecondary;
+  }
+
+  @include sm-breakpoint {
+    width: getRem(90);
+    height: getRem(30);
+    font-size: getRem(12);
+  }
+}
