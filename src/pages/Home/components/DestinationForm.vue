@@ -1,12 +1,16 @@
 <template>
-  <form class="home-title-container-left-destination-form">
+  <form class="home-welcome-title-container-left-destination-form">
     <div>
       <img :src="pointImage" alt="Point image" />
       <div>
-        <span class="home-title-container-left-destination-form-input-title">
+        <span
+          class="home-welcome-title-container-left-destination-form-input-title"
+        >
           Location
         </span>
-        <span class="home-title-container-left-destination-form-input-value">
+        <span
+          class="home-welcome-title-container-left-destination-form-input-value"
+        >
           Bogor, Indonesia
         </span>
       </div>
@@ -14,10 +18,14 @@
     <div>
       <img :src="calendarImage" />
       <div>
-        <span class="home-title-container-left-destination-form-input-title">
+        <span
+          class="home-welcome-title-container-left-destination-form-input-title"
+        >
           Date
         </span>
-        <span class="home-title-container-left-destination-form-input-value">
+        <span
+          class="home-welcome-title-container-left-destination-form-input-value"
+        >
           22 Mar, 2022
         </span>
       </div>

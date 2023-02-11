@@ -1,7 +1,7 @@
 <template>
-  <div class="home-header">
-    <span class="home-header-title"> JourneyHub </span>
-    <div class="home-header-button-container">
+  <div class="home-welcome-header">
+    <span class="home-welcome-header-title"> JourneyHub </span>
+    <div class="home-welcome-header-button-container">
       <PrimaryButton>Login</PrimaryButton>
       <PrimaryButton>SignUp</PrimaryButton>
     </div>

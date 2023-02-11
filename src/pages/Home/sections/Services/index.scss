@@ -1,0 +1,80 @@
+@import "src/styles/base";
+@import "src/pages/Home/index.scss";
+
+.home-services {
+  @extend .home;
+  background-color: $backgroundColorLight;
+
+
+  &-title {
+    margin: getRem(50) auto;
+    width: 70%;
+    text-align: center;
+    font-size: getRem(28);
+    font-weight: 500;
+
+    @include md-breakpoint {
+      margin: getRem(70) auto;
+      font-size: getRem(40);
+    }
+  }
+
+  &-card {
+    width: getRem(240);
+    height: getRem(170);
+    border-radius: getRem(20);
+    background-color: $contentText;
+    box-shadow: getRem(4) getRem(4) getRem(20) $boxShadow;
+    display: flex;
+    flex-direction: column;
+    padding: getRem(30) getRem(15);
+    row-gap: getRem(10);
+
+    &:hover {
+      box-shadow: getRem(15) getRem(15) getRem(10) $boxShadow;
+      transition: box-shadow 0.3s ease-out;
+    }
+
+    @include md-breakpoint {
+      padding: getRem(15) getRem(10);
+      width: getRem(270);
+      height: getRem(200);
+    }
+
+    & > img {
+      width: getRem(40);
+      height: getRem(40);
+    }
+
+    &-title {
+      font-weight: 500;
+    }
+
+    &-content {
+      color: $contentTextSecondary;
+      font-size: getRem(12);
+
+      @include md-breakpoint {
+        font-size: getRem(10);
+      }
+    }
+
+    @include md-breakpoint {
+      width: getRem(200);
+      height: getRem(150);
+    }
+
+    &-container {
+      display: flex;
+      justify-content: center;
+      row-gap: getRem(15);
+      column-gap: getRem(15);
+      flex-wrap: wrap;
+
+      @include md-breakpoint {
+        margin-top: getRem(90);
+
+      }
+    }
+  }
+}
