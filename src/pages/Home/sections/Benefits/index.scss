@@ -1,0 +1,128 @@
+@import "src/styles/base";
+@import "src/pages/Home/index.scss";
+
+.home-benefits {
+  @extend .home;
+  background-color: $backgroundColorLight;
+  height: max-content;
+  padding-bottom: getRem(70);
+
+  &-why-choose-us {
+    @include md-breakpoint {
+      display: flex;
+      padding-top: getRem(70);
+    }
+  }
+
+  &-card{
+    width: getRem(270);
+    height: getRem(150);
+    border-radius: getRem(10);
+    box-shadow: getRem(4) getRem(4) getRem(20) $boxShadow;
+    display: flex;
+    padding: getRem(30) getRem(15);
+    column-gap: getRem(10);
+    row-gap: getRem(10);
+
+    &-title{
+      font-weight: 500;
+    }
+
+    &-content{
+      line-height: initial;
+      color: $contentTextSecondary;
+      font-size: getRem(12);
+
+      &-container{
+        display: flex;
+        row-gap: getRem(5);
+        flex-direction: column;
+      }
+
+      &-rating{
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    & > img {
+      width: getRem(30);
+      height: getRem(30);
+    }
+
+    &-container {
+      display: flex;
+      justify-content: center;
+      row-gap: getRem(15);
+      column-gap: getRem(15);
+      flex-wrap: wrap;
+
+    }
+  }
+
+  &-title {
+    font-size: getRem(40);
+    font-weight: 500;
+  }
+
+  &-center-title {
+    margin: getRem(80) auto;
+    text-align: center;
+  }
+
+  &-left {
+    & > img {
+      width: 100%;
+
+      @include md-breakpoint {
+        width: 50vw;
+      }
+
+      @include lg-breakpoint {
+        width: initial;
+      }
+    }
+  }
+
+  &-right {
+    display: flex;
+    flex-direction: column;
+    margin-top: getRem(10);
+
+    @include md-breakpoint {
+      margin-top: initial;
+      margin-left: getRem(100);
+    }
+
+    &-description {
+      margin-top: getRem(20);
+      font-size: getRem(12);
+      line-height: getRem(20);
+      color: $contentTextSecondary;
+      text-align: justify;
+    }
+
+    &-digits {
+      display: flex;
+      margin-top: getRem(10);
+      justify-content: space-between;
+      flex-wrap: wrap;
+
+      &-item {
+        display: flex;
+        flex-direction: column;
+
+        &-number {
+          font-size: getRem(18);
+          font-weight: bold;
+          color: $textBright;
+        }
+
+        &-label {
+          font-size: getRem(12);
+          color: $contentTextSecondary;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,115 @@
+@import "src/styles/base";
+@import "src/pages/Home/index.scss";
+
+.home-popular-places {
+  @extend .home;
+  background-color: $backgroundColorLight;
+  overflow: hidden;
+
+  &-title {
+    margin: 0 auto;
+    width: 70%;
+    text-align: center;
+    font-size: getRem(28);
+    font-weight: 500;
+
+    @include md-breakpoint {
+      font-size: getRem(40);
+    }
+  }
+
+  &-card {
+    display: flex;
+    flex-direction: column;
+    width: getRem(260);
+    border-radius: getRem(17);
+    margin: getRem(20);
+    padding: getRem(20);
+
+    & > img {
+      height: getRem(250);
+
+      &:hover {
+        box-shadow: getRem(10) getRem(10) getRem(10) $boxShadow;
+        transition: box-shadow 0.3s ease-out;
+      }
+    }
+
+    &-title {
+      margin-top: getRem(10);
+      font-weight: 500;
+    }
+
+    &-location {
+      margin-top: getRem(5);
+      font-size: getRem(11);
+      color: $contentTextSecondary;
+    }
+
+    &-rating {
+      margin-top: getRem(3);
+      align-items: center;
+      display: flex;
+      column-gap: getRem(10);
+
+      & > div {
+        display: flex;
+        align-items: center;
+        column-gap: getRem(3);
+      }
+
+      font-size: getRem(10);
+      color: $contentTextSecondary;
+    }
+
+  }
+
+  &-navigation-button {
+    width: getRem(40);
+    height: getRem(40);
+    border-radius: getRem(7);
+    border: none;
+    background-color: $backgroundSecondary;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $contentTextSecondary;
+    }
+
+    &-container {
+      display: flex;
+      justify-content: flex-end;
+      column-gap: getRem(15);
+      margin-top: getRem(20);
+    }
+
+    &:disabled {
+      cursor: initial;
+    }
+
+    &-inactive {
+      @extend .home-popular-places-navigation-button;
+      background-color: $boxShadow;
+      cursor: initial;
+
+      &:hover {
+        background-color: $hoverBackgroundLight;
+      }
+    }
+  }
+
+  &-carousel {
+    display: flex;
+    height: getRem(400);
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow: hidden;
+
+    &-item {
+      width: getRem(300);
+      flex-basis: getRem(250);
+      transition: transform 0.25s ease-in-out;
+    }
+  }
+}

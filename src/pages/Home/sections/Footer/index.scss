@@ -1,0 +1,76 @@
+@import "src/styles/base";
+
+.home-footer {
+  background-color: #031D06;
+  width: 100%;
+  height: max-content;
+  color: $contentText;
+  padding: getRem(50) getRem(20) getRem(20);
+
+  &-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: getRem(10);
+
+    @include sm-breakpoint {
+      flex-direction: row;
+      justify-content: space-around;
+    }
+
+    &-left {
+      display: flex;
+      flex-direction: column;
+      row-gap: getRem(10);
+
+      &-title {
+        font-weight: bold;
+        font-size: getRem(30);
+      }
+
+      span:nth-child(2) {
+        font-size: getRem(13);
+        width: getRem(300);
+      }
+
+      &-images {
+        margin-top: getRem(10);
+        display: flex;
+        column-gap: getRem(10);
+
+        & > img {
+          width: getRem(40);
+          height: getRem(40);
+        }
+      }
+    }
+
+    &-right {
+      display: flex;
+      flex-direction: column;
+      row-gap: getRem(10);
+      margin-top: getRem(20);
+
+      @include sm-breakpoint {
+        margin-top: 0;
+      }
+
+      & > span:first-child {
+        font-weight: 500;
+        font-size: getRem(20);
+      }
+
+      & > span:not(:first-child) {
+        font-size: getRem(13);
+      }
+    }
+  }
+
+  &-copyright {
+    display: flex;
+    align-items: center;
+    font-size: getRem(12);
+    column-gap: getRem(5);
+    margin-top: getRem(20);
+    justify-content: center;
+  }
+}

@@ -4,6 +4,8 @@
 .home-services {
   @extend .home;
   background-color: $backgroundColorLight;
+  height: max-content;
+  padding-bottom: getRem(90);
 
 
   &-title {
@@ -35,12 +37,6 @@
       transition: box-shadow 0.3s ease-out;
     }
 
-    @include md-breakpoint {
-      padding: getRem(15) getRem(10);
-      width: getRem(270);
-      height: getRem(200);
-    }
-
     & > img {
       width: getRem(40);
       height: getRem(40);
@@ -60,6 +56,7 @@
     }
 
     @include md-breakpoint {
+      padding: getRem(15) getRem(10);
       width: getRem(200);
       height: getRem(150);
     }
@@ -73,7 +70,6 @@
 
       @include md-breakpoint {
         margin-top: getRem(90);
-
       }
     }
   }
