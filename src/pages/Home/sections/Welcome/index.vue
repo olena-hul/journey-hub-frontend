@@ -38,7 +38,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import "./index.scss";
 import PageHeader from "@/pages/Home/components/PageHeader.vue";
 import DestinationForm from "@/pages/Home/components/DestinationForm.vue";

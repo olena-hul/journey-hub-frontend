@@ -110,7 +110,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import "./index.scss";
 import PlacesImagesCarousel from "@/pages/Home/components/Carousel.vue";
 import CarouselItem from "@/pages/Home/components/CarouselItem.vue";
@@ -122,7 +122,6 @@ import StarPentagon from "@/assets/images/StarPentagon.svg";
 import { store } from "@/pages/Home/store";
 
 const array = Array.from(Array(6).keys());
-store.carouselItems = array;
 
 export default {
   name: "popular-places",

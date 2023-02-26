@@ -1,6 +1,5 @@
 <template>
   <button
-    v-bind="$props"
     :class="
       isActive
         ? 'home-popular-places-navigation-button'
@@ -14,7 +13,7 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import RightArrow from "@/assets/images/RightArrow.svg";
 import LeftArrow from "@/assets/images/LeftArrow.svg";
 

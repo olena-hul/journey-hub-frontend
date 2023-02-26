@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import StarPentagon from "@/assets/images/StarPentagon.svg";
 import Customer1 from "@/assets/images/Customer1.png";
 

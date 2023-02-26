@@ -34,7 +34,7 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import PrimaryButton from "@/common/components/Buttons/PrimaryButton.vue";
 import PointImage from "@/assets/images/Point.svg";
 import CalendarImage from "@/assets/images/Calendar.svg";

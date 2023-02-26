@@ -1,16 +1,18 @@
 <template>
-  <button class="button" @click="onClick">
+  <button class="button" @click="onClick && onClick()">
     <slot />
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import "./index.scss";
 export default {
   name: "primary-button",
   props: {
-    text: String,
-    onClick: Function,
+    onClick: {
+      type: Function,
+      required: false,
+    },
   },
 };
 </script>

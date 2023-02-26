@@ -39,7 +39,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import "./index.scss";
 import Traveller from "@/assets/images/Traveller.png";
 import FeedbackCard from "@/pages/Home/components/FeedbackCard.vue";

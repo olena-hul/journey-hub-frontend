@@ -26,7 +26,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import "./index.scss";
 import Facebook from "@/assets/images/Facebook.svg";
 import Instagram from "@/assets/images/Instagram.svg";

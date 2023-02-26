@@ -9,16 +9,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { store } from "@/pages/Home/store";
 
 export default {
   name: "carousel-item",
-  data() {
-    return {
-      store,
-    };
-  },
+  data: () => ({
+    store,
+  }),
 };
 </script>
 

@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import "./index.scss";
 import ServicesCard from "@/pages/Home/components/ServicesCard.vue";
 import HeartIcon from "@/assets/images/HeartIcon.svg";

@@ -14,18 +14,19 @@
     />
   </div>
 
-  <div class="home-popular-places-carousel">
-    <transition-group name="slide" ref="carousel-items">
-      <slot />
+  <div class="home-popular-places-carousel" ref="carouselItems">
+    <transition-group name="slide">
+      <slot ref="" />
     </transition-group>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import NavigationButton from "@/pages/Home/components/NavigationButton.vue";
 import { store } from "@/pages/Home/store";
 
-export default {
+export default defineComponent({
   name: "PlacesImagesCarousel",
   components: { NavigationButton },
   data: function () {
@@ -35,15 +36,15 @@ export default {
       rightDisabled: false,
       isLeftActive: false,
       isRightActive: true,
+      carouselCurrentSlide: 0,
     };
   },
 
   methods: {
-    elementVisible(index) {
+    elementVisible(index: number) {
       const items = document.getElementsByClassName(
         "home-popular-places-carousel-item"
       );
-      console.log(items);
       const element = items[index];
       const rect = element.getBoundingClientRect();
       return (
@@ -55,11 +56,17 @@ export default {
           (window.innerWidth || document.documentElement.clientWidth)
       );
     },
-    isLastItemOnViewPort() {
-      return this.elementVisible(this.store.carouselItems.length - 1);
+
+    getChildrenLength(): number {
+      const carouselItems = this.$refs.carouselItems as HTMLElement | undefined;
+      return carouselItems ? carouselItems.children.length : 0;
     },
-    isSecondLastItemOnViewPort() {
-      return this.elementVisible(this.store.carouselItems.length - 2);
+
+    isLastItemOnViewPort(): boolean {
+      return this.elementVisible(this.getChildrenLength() - 1);
+    },
+    isSecondLastItemOnViewPort(): boolean {
+      return this.elementVisible(this.getChildrenLength() - 2);
     },
     disableButtons() {
       this.leftDisabled = true;
@@ -105,7 +112,7 @@ export default {
       }, 250);
     },
   },
-};
+});
 </script>
 
 <style scoped></style>

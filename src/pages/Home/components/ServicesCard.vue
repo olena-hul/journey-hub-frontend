@@ -5,7 +5,7 @@
     <span class="home-services-card-content">{{ content }} </span>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   name: "services-card",
   props: {

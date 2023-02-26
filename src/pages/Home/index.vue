@@ -6,7 +6,7 @@
   <HomeFooter />
 </template>
 
-<script>
+<script lang="ts">
 import "./index.scss";
 import OurServices from "@/pages/Home/sections/Services/index.vue";
 import WelcomeScreen from "@/pages/Home/sections/Welcome/index.vue";

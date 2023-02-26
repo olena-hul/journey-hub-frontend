@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import PrimaryButton from "@/common/components/Buttons/PrimaryButton.vue";
 
 export default {

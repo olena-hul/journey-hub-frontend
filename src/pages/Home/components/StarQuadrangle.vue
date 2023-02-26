@@ -2,7 +2,7 @@
   <img :src="starQuadrangleImage" v-bind="$props" alt="Star pentagon image" />
 </template>
 
-<script>
+<script lang="ts">
 import StarQuadrangle from "@/assets/images/StarQuadrangle.svg";
 
 export default {
@@ -11,6 +11,9 @@ export default {
     return {
       starQuadrangleImage: StarQuadrangle,
     };
+  },
+  props: {
+    style: Object,
   },
 };
 </script>
