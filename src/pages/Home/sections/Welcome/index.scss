@@ -14,10 +14,7 @@
     &-button-container {
       display: flex;
       align-items: center;
-
-      & > button {
-        margin-left: getRem(14);
-      }
+      column-gap: getRem(14);
     }
 
 
@@ -198,5 +195,103 @@
       }
     }
   }
-}
 
+  &-auth {
+    width: getRem(300);
+    min-height: getRem(400);
+
+    & > form {
+      display: flex;
+      flex-direction: column;
+      row-gap: getRem(20);
+
+    }
+
+    &-sign-up {
+      @extend .home-welcome-auth;
+      width: getRem(300);
+      min-height: getRem(520);
+
+      @include md-breakpoint{
+        width: getRem(400);
+        min-height: getRem(470);
+      }
+
+      &-names {
+        display: flex;
+        flex-direction: column;
+        column-gap: getRem(10);
+        row-gap: getRem(10);
+
+        @include md-breakpoint{
+          flex-direction: row;
+        }
+      }
+    }
+
+    &-account-question {
+      display: flex;
+      font-size: getRem(10);
+      column-gap: getRem(5);
+
+      span:first-child {
+        color: $contentTextSecondary;
+      }
+
+      span:nth-child(2) {
+        font-weight: 500;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    &-save-forgot-password-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      & > span {
+        font-size: getRem(9);
+        color: $contentTextSecondary;
+
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+
+    &-button {
+      width: 100% !important;
+      border-radius: getRem(10) !important;
+    }
+
+    &-center-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      column-gap: getRem(10);
+
+      & > span {
+        font-size: getRem(10);
+        color: $contentTextSecondary;
+
+        &:nth-child(2) {
+          font-weight: 500;
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      & > img {
+        cursor: pointer;
+      }
+    }
+  }
+}

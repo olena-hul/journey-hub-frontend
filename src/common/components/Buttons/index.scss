@@ -9,6 +9,7 @@
   height: getRem(30);
   font-size: getRem(10);
   cursor: pointer;
+  font-weight: 500;
 
   &:hover{
     border-width: getRem(1);

@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { store } from "@/pages/Home/store";
+import { store } from "@/pages/Home/store/carousel";
 
 export default {
   name: "carousel-item",

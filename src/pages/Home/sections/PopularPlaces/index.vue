@@ -119,7 +119,7 @@ import PopularPlace2 from "@/assets/images/PopularPlace2.png";
 import PopularPlace3 from "@/assets/images/PopularPlace3.png";
 import StarPentagon from "@/assets/images/StarPentagon.svg";
 
-import { store } from "@/pages/Home/store";
+import { store } from "@/pages/Home/store/carousel";
 
 const array = Array.from(Array(6).keys());
 

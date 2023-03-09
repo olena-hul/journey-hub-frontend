@@ -1,0 +1,90 @@
+@import "src/styles/base";
+
+.inputs {
+  &-label {
+    position: relative;
+    color: $contentTextSecondary;
+    font-size: getRem(9);
+  }
+
+  &-messages{
+    padding-left: getRem(15);
+  }
+
+  &-text {
+    width: 100%;
+    margin-top: getRem(5);
+    height: getRem(30);
+    border-radius: getRem(5);
+    border-width: getRem(1);
+    border-color: $boxShadow;;
+    font-size: getRem(10);
+    padding-left: getRem(30);
+    background-repeat: no-repeat;
+    background-position-x: getRem(3);
+    background-position-y: getRem(3);
+
+
+    @include md-breakpoint {
+      scale: initial;
+      background-position-x: getRem(10);
+      background-position-y: getRem(8);
+    }
+
+    &:focus {
+      box-shadow: getRem(4) getRem(4) getRem(20) $boxShadow;
+      border-width: getRem(1);
+      outline: none;
+    }
+  }
+
+  &-checkbox-label {
+    font-size: getRem(9);
+    display: flex;
+    align-items: center;
+    column-gap: getRem(5);
+    color: $contentTextSecondary;
+  }
+}
+
+input[type="email"] {
+  background-image: url("@/assets/images/sms.svg");
+}
+
+input[type="password"] {
+  background-image: url("@/assets/images/lock.svg");
+}
+
+input[type="text"] {
+  background-image: url("@/assets/images/user.svg");
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: black;
+  margin: 0;
+  font: inherit;
+  width: getRem(15);
+  height: getRem(15);
+  border-radius: getRem(5);
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: getRem(8);
+  height: getRem(8);
+  transform: scale(0);
+  transition: 0ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--form-control-color);
+  background-color: white;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}

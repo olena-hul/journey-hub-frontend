@@ -1,7 +1,12 @@
 <template>
-  <button class="button" @click="onClick && onClick()">
+  <FormKit
+    :input-class="`${className} button`"
+    :v-bind="inputProps"
+    type="button"
+    @click="onClick && onClick()"
+  >
     <slot />
-  </button>
+  </FormKit>
 </template>
 
 <script lang="ts">
@@ -13,6 +18,8 @@ export default {
       type: Function,
       required: false,
     },
+    className: String,
+    inputProps: Object,
   },
 };
 </script>

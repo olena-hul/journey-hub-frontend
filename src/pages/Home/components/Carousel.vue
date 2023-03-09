@@ -24,7 +24,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import NavigationButton from "@/pages/Home/components/NavigationButton.vue";
-import { store } from "@/pages/Home/store";
+import { store } from "@/pages/Home/store/carousel";
 
 export default defineComponent({
   name: "PlacesImagesCarousel",
