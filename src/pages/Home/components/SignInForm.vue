@@ -8,7 +8,7 @@
       <h2>Login</h2>
       <div class="home-welcome-auth-account-question">
         <span>Do not have an account?</span>
-        <span>Register</span>
+        <span @click="openSignUpPopup">Register</span>
       </div>
       <TextInput
         v-model="formData.email"
@@ -26,21 +26,26 @@
           name: 'password',
           type: 'password',
           placeholder: 'Password',
-          validation: 'required|length:2',
+          validation: 'required|length:8',
         }"
         label-text="Password"
       ></TextInput>
       <div class="home-welcome-auth-save-forgot-password-container">
-        <CheckboxInput />
         <span>Forgot password?</span>
       </div>
-      <PrimaryButton type="submit" class-name="home-welcome-auth-button">
+      <PrimaryButton
+        type="submit"
+        class-name="home-welcome-auth-button"
+        :input-props="{
+          disabled: submitDisabled || !this.formValid(),
+        }"
+      >
         Sign In
       </PrimaryButton>
 
       <div class="home-welcome-auth-center-container">
         <span>Or login with</span>
-        <img :src="GmailIcon" alt="Gmail icon" />
+        <img :src="GmailIcon" alt="Gmail icon" @click="googleSignIn" />
       </div>
     </form>
   </OverlayPopup>
@@ -52,32 +57,65 @@ import TextInput from "@/common/components/Inputs/TextInput.vue";
 import CheckboxInput from "@/common/components/Inputs/Checkbox.vue";
 import PrimaryButton from "@/common/components/Buttons/PrimaryButton.vue";
 import GmailIcon from "@/assets/images/Gmail.svg";
-import { login } from "@/pages/Home/api";
 import type { SignInInput } from "@/pages/Home/api";
 import { defineComponent } from "vue";
+import { useAuthStore } from "@/pages/Home/store/auth";
+import router from "@/router";
 
 export default defineComponent({
   name: "sign-in-form",
   components: {
     PrimaryButton,
-    CheckboxInput,
     TextInput,
     OverlayPopup,
   },
   props: {
     isOpen: Boolean,
     onClose: Function,
+    setAlertMessage: Function,
+    openSignUpPopup: Function,
   },
   data() {
     return {
       GmailIcon,
       formData: { email: "", password: "" } as SignInInput,
+      store: useAuthStore(),
+      submitDisabled: false,
     };
   },
 
   methods: {
+    formValid() {
+      return Object.values(this.formData).every((value) => value !== "");
+    },
+    setSubmitDisabled(value: boolean) {
+      this.submitDisabled = value;
+    },
     async submitLogin() {
-      const resp = await login(this.formData);
+      this.setSubmitDisabled(true);
+      const { error } = await this.store.login(this.formData);
+      this.setSubmitDisabled(false);
+      if (error) {
+        this.setAlertMessage && this.setAlertMessage(error);
+        setTimeout(() => {
+          this.setAlertMessage && this.setAlertMessage(null);
+        }, 2000);
+        return;
+      }
+      await router.push("/profile");
+    },
+    async googleSignIn() {
+      this.setSubmitDisabled(true);
+      const { error } = await this.store.googleAuth();
+      this.setSubmitDisabled(false);
+      if (error) {
+        this.setAlertMessage && this.setAlertMessage(error);
+        setTimeout(() => {
+          this.setAlertMessage && this.setAlertMessage(null);
+        }, 2000);
+        return;
+      }
+      await router.push("/profile");
     },
   },
 });

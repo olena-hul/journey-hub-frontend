@@ -17,6 +17,12 @@
     background-color: $contentTextSecondary;
   }
 
+  &:disabled {
+    border: none;
+    background-color: $disabled;
+    cursor: initial;
+  }
+
   @include sm-breakpoint {
     width: getRem(90);
     height: getRem(30);

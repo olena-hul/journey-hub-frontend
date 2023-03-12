@@ -1,13 +1,17 @@
 import axios from "axios";
+import { auth } from "@/firebase/config";
+import type { APIResponse } from "@/common/interfaces";
 
 async function request(
   url: string,
   method: string,
   params = {},
-  headers = {},
+  headers: any = {},
   body = {}
-) {
+): Promise<APIResponse> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    headers["Authorization"] = `Bearer ${token}`;
     const { data } = await axios.request({
       url,
       method,
@@ -15,14 +19,26 @@ async function request(
       params,
       data: body,
     });
-    return data;
+    return {
+      data,
+      error: null,
+    };
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log("error message: ", error.message);
-      return error.message;
+      console.log(
+        "error message: ",
+        error.response?.data.error || error.message
+      );
+      return {
+        data: null,
+        error: error.response?.data.error || error.message,
+      };
     } else {
       console.log("unexpected error: ", error);
-      return "An unexpected error occurred";
+      return {
+        data: null,
+        error: error as string,
+      };
     }
   }
 }

@@ -1,0 +1,30 @@
+@import "src/styles/base";
+
+.alert {
+  z-index: 9999999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: getRem(300);
+  height: max-content;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: getRem(10);
+  color: $contentText;
+  font-weight: 500;
+  font-size: getRem(10);
+  margin: getRem(20) auto 0;
+  padding: getRem(10);
+
+  &-info{
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+  }
+
+  &-danger{
+    background-color: #ff0012;
+    border-color: #f5c6cb;
+  }
+}

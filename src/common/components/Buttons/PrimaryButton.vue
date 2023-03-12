@@ -1,7 +1,7 @@
 <template>
   <FormKit
     :input-class="`${className} button`"
-    :v-bind="inputProps"
+    v-bind="inputProps"
     type="button"
     @click="onClick && onClick()"
   >
