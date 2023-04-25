@@ -1,5 +1,5 @@
 <template>
-  <div class="home-popular-places-navigation-button-container">
+  <div class="carousel-navigation-button-container">
     <NavigationButton
       @click="prevSlide"
       direction="left"
@@ -14,7 +14,7 @@
     />
   </div>
 
-  <div class="home-popular-places-carousel" ref="carouselItems">
+  <div :class="`carousel-container  ${className}`" ref="carouselItems">
     <transition-group name="slide">
       <slot ref="" />
     </transition-group>
@@ -23,11 +23,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import NavigationButton from "@/pages/Home/components/NavigationButton.vue";
-import { store } from "@/pages/Home/store/carousel";
+import NavigationButton from "@/common/components/Carousel/NavigationButton.vue";
+import { store } from "@/common/components/Carousel/store";
+import "./index.scss";
 
 export default defineComponent({
-  name: "PlacesImagesCarousel",
+  name: "ImagesCarousel",
   components: { NavigationButton },
   data: function () {
     return {
@@ -39,21 +40,34 @@ export default defineComponent({
       carouselCurrentSlide: 0,
     };
   },
+  props: {
+    parent: {
+      required: false,
+      default: null,
+    },
+    className: String,
+  },
+  mounted() {
+    this.store.carouselCurrentSlide = 0;
+  },
 
   methods: {
     elementVisible(index: number) {
-      const items = document.getElementsByClassName(
-        "home-popular-places-carousel-item"
-      );
+      const items = document.getElementsByClassName("carousel-container-item");
       const element = items[index];
+      const parent = document.getElementById(this.parent || "");
       const rect = element.getBoundingClientRect();
       return (
         rect.top >= 0 &&
         rect.left >= 0 &&
         rect.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight) &&
+          (parent?.clientHeight ||
+            window.innerHeight ||
+            document.documentElement.clientHeight) &&
         rect.right <=
-          (window.innerWidth || document.documentElement.clientWidth)
+          (parent?.clientWidth ||
+            window.innerWidth ||
+            document.documentElement.clientWidth)
       );
     },
 

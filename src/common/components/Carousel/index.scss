@@ -1,0 +1,56 @@
+@import "@/styles/base";
+
+.carousel{
+  &-navigation-button {
+    width: getRem(25);
+    height: getRem(25);
+    border-radius: getRem(5);
+    border: none;
+    background-color: $backgroundSecondary;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $contentTextSecondary;
+    }
+
+    & > img {
+      width: getRem(10);
+      height: getRem(10);
+    }
+
+    &-container {
+      display: flex;
+      justify-content: flex-end;
+      column-gap: getRem(15);
+      margin-top: getRem(20);
+    }
+
+    &:disabled {
+      cursor: initial;
+    }
+
+    &-inactive {
+      @extend .carousel-navigation-button;
+      background-color: $boxShadow;
+      cursor: initial;
+
+      &:hover {
+        background-color: $hoverBackgroundLight;
+      }
+    }
+  }
+  &-container {
+    display: flex;
+    height: getRem(400);
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow: hidden;
+
+    &-item {
+      width: getRem(300);
+      flex-basis: getRem(250);
+      transition: transform 0.25s ease-in-out;
+    }
+  }
+}

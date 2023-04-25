@@ -4,6 +4,7 @@ import type { APIResponse } from "@/common/interfaces";
 
 const USER_URL = `${API_URL}auth/user`;
 const REGISTER_URL = `${API_URL}auth/register`;
+const DESTINATION_URL = `${API_URL}destinations/`;
 
 export interface SignInInput {
   email: string;
@@ -15,6 +16,23 @@ export interface BaseSignUpInput {
   last_name: string;
   email: string;
   role: string;
+}
+
+interface Location {
+  latitude: number;
+  longitude: number;
+}
+export interface Destination {
+  id: number;
+  location: Location;
+  name: string;
+  description: string;
+  destination_type: string;
+  rating: number;
+  ratings_count: number;
+  views_count: number;
+  image_urls: string[];
+  parent_destination?: Destination;
 }
 
 export interface SignUpInput extends BaseSignUpInput {
@@ -31,4 +49,8 @@ export async function getUser(): Promise<APIResponse> {
 
 export async function register(body: BaseSignUpInput): Promise<any> {
   return await http.post(REGISTER_URL, { body });
+}
+
+export async function getDestinations(): Promise<APIResponse<Destination[]>> {
+  return await http.get(DESTINATION_URL, {});
 }

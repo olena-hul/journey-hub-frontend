@@ -112,14 +112,14 @@
 
 <script lang="ts">
 import "./index.scss";
-import PlacesImagesCarousel from "@/pages/Home/components/Carousel.vue";
-import CarouselItem from "@/pages/Home/components/CarouselItem.vue";
+import PlacesImagesCarousel from "@/common/components/Carousel/Carousel.vue";
+import CarouselItem from "@/common/components/Carousel/CarouselItem.vue";
 import PopularPlace1 from "@/assets/images/PopularPlace1.png";
 import PopularPlace2 from "@/assets/images/PopularPlace2.png";
 import PopularPlace3 from "@/assets/images/PopularPlace3.png";
 import StarPentagon from "@/assets/images/StarPentagon.svg";
 
-import { store } from "@/pages/Home/store/carousel";
+import { store } from "@/common/components/Carousel/store";
 
 const array = Array.from(Array(6).keys());
 

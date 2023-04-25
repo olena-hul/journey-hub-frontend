@@ -1,0 +1,220 @@
+@import "@/styles/base";
+
+.planning {
+  &-form {
+    position: relative;
+    height: max-content;
+    padding: getRem($basePaddingHorizontalXs) getRem($basePaddingHorizontalSm) getRem($basePaddingHorizontalMd);
+    background-color: $backgroundColorLight;
+    overflow-y: scroll;
+
+    @include md-breakpoint {
+      padding-left: getRem($basePaddingHorizontalMd);
+      padding-bottom: initial;
+      width: 50%;
+      height: 100vh;
+    }
+  }
+
+  &-map {
+    top: 0;
+    right: 0;
+    position: absolute;
+    width: 50%;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  &-heading {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    &-back-icon {
+      position: absolute;
+      top: getRem(30);
+      left: getRem(10);
+      width: getRem(15);
+      height: getRem(15);
+      cursor: pointer;
+
+      @include sm-breakpoint {
+        top: getRem(30);
+        left: getRem(15);
+      }
+
+      @include md-breakpoint {
+        left: getRem(20);
+      }
+    }
+
+    &-date-form {
+      margin-top: getRem(10);
+      display: flex;
+      align-items: center;
+      column-gap: getRem(10);
+      font-size: getRem(12);
+
+      &-pencil-icon {
+        width: getRem(12);
+        height: getRem(12);
+      }
+    }
+
+    &-destination-image {
+      margin-top: getRem(20);
+      width: 100%;
+      box-shadow: getRem(5) getRem(5) getRem(20) $boxShadow;
+
+      @include sm-breakpoint {
+        width: calc(100wv / 2 - getRem($basePaddingHorizontalMd * 2));
+      }
+    }
+  }
+
+  &-top-places {
+    position: absolute;
+    margin-top: getRem(10);
+
+    &-carousel {
+      height: getRem(270);
+      column-gap: getRem(20);
+    }
+
+    &-carousel-item {
+      width: getRem(150);
+      height: getRem(200);
+      flex-basis: getRem(200);
+
+      &-card {
+        border-radius: getRem(10);
+        padding: getRem(10);
+        background-color: $contentText;
+        height: getRem(200);
+        box-shadow: getRem(4) getRem(4) getRem(15) $boxShadow;
+        display: flex;
+        flex-direction: column;
+        row-gap: getRem(10);
+
+        & > h4 {
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        & > img {
+          width: 100%;
+          height: getRem(100);
+        }
+
+        & > span {
+          display: -webkit-box;
+          font-size: getRem(8);
+          text-overflow: ellipsis;
+          -webkit-line-clamp: 4;
+
+          color: $disabled;
+        }
+      }
+    }
+  }
+
+  &-budget-container {
+    display: flex;
+    align-items: center;
+    column-gap: getRem(10);
+
+    &-suggest-button {
+      background-color: $backgroundColorDarker;
+      color: $backgroundSecondary;
+      font-weight: bold;
+      font-size: getRem(10);
+      border-radius: getRem(10);
+      margin-left: getRem(10);
+    }
+  }
+
+  &-daily-activity {
+    position: relative;
+    margin-top: getRem(25);
+    &-date-container {
+      display: flex;
+      align-items: center;
+      column-gap: getRem(10);
+
+      &-day {
+        color: $disabled;
+        font-size: getRem(12);
+      }
+
+      &-day-number {
+        font-weight: 500;
+      }
+    }
+
+    &-card {
+      margin-top: getRem(10);
+      height: getRem(100);
+      background-color: $contentText;
+      box-shadow: getRem(5) getRem(5) getRem(20) $boxShadow;
+      border-radius: getRem(10);
+      display: flex;
+      padding-left: getRem(20);
+      align-items: center;
+      column-gap: getRem(20);
+
+      &-icon{
+        width: getRem(20);
+        height: getRem(20);
+      }
+
+      &-center{
+      padding-top: getRem(10);
+        align-self: flex-start;
+        display: flex;
+        flex-direction: column;
+        row-gap: getRem(5);
+
+        &-details{
+          display: flex;
+          column-gap: getRem(5);
+          font-size: getRem(10);
+
+          & > img{
+            width: getRem(10);
+            height: getRem(10);
+          }
+
+          & > span{
+            margin-right: getRem(10);
+          }
+        }
+
+        & > span{
+          display: -webkit-box;
+          font-size: getRem(8);
+          text-overflow: ellipsis;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          color: $disabled;
+        }
+      }
+
+      &-attraction-image{
+        width: 33%;
+        height: 100%;
+      }
+    }
+
+    &-remove{
+      position: absolute;
+      width: getRem(15);
+      height: getRem(15);
+      right: - getRem(5);
+      top: getRem(20);
+    }
+  }
+}

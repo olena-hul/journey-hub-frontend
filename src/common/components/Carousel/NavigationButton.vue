@@ -2,8 +2,8 @@
   <button
     :class="
       isActive
-        ? 'home-popular-places-navigation-button'
-        : 'home-popular-places-navigation-button-inactive'
+        ? 'carousel-navigation-button'
+        : 'carousel-navigation-button-inactive'
     "
   >
     <img
@@ -16,6 +16,7 @@
 <script lang="ts">
 import RightArrow from "@/assets/images/RightArrow.svg";
 import LeftArrow from "@/assets/images/LeftArrow.svg";
+import "./index.scss";
 
 export default {
   name: "navigation-button",

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="home-popular-places-carousel-item"
+    :class="`carousel-container-item ${className}`"
     :style="{
       transform: 'translateX(' + -100 * store.carouselCurrentSlide + '%)',
     }"
@@ -10,13 +10,17 @@
 </template>
 
 <script lang="ts">
-import { store } from "@/pages/Home/store/carousel";
+import { store } from "@/common/components/Carousel/store";
+import "./index.scss";
 
 export default {
   name: "carousel-item",
   data: () => ({
     store,
   }),
+  props: {
+    className: String,
+  },
 };
 </script>
 

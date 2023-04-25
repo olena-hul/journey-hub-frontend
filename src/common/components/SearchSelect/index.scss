@@ -1,0 +1,28 @@
+@import "@/styles/base";
+
+.font {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: getRem(12) !important;
+  color: black !important;
+  font-weight: bold;
+}
+
+.multiselect__select, .multiselect__tags, .multiselect__input, .multiselect__single {
+  background-color: $backgroundColorDarker !important;
+  background-image: none !important;
+  border: none !important;
+  @extend .font;
+
+  &:hover{
+    cursor: pointer;
+  }
+
+}
+
+.multiselect__placeholder {
+  @extend .font;
+}
+
+.multiselect__select {
+  display: none !important;
+}
