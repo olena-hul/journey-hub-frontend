@@ -7,7 +7,7 @@
       placeholder="Select location"
       select-label=""
       deselectLabel=""
-      track-by="name"
+      :track-by="trackBy"
       label="name"
       :customLabel="customLabel"
     >
@@ -28,6 +28,10 @@ export default defineComponent({
     customLabel: {
       required: false,
       type: Function,
+    },
+    trackBy: {
+      required: false,
+      type: String,
     },
     modelValue: Object,
   },

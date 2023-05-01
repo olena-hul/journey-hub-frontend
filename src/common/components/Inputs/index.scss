@@ -38,6 +38,26 @@
     }
   }
 
+  &-select {
+    background-color: field;
+    width: 100%;
+    margin-top: getRem(5);
+    height: getRem(30);
+    border-radius: getRem(5);
+    border-width: getRem(1);
+    border-color: $boxShadow;;
+    font-size: getRem(10);
+    padding-left: getRem(10);
+    padding-right: getRem(10);
+    color: fieldtext;
+
+    &:focus {
+      box-shadow: getRem(4) getRem(4) getRem(20) $boxShadow;
+      border-width: getRem(1);
+      outline: none;
+    }
+  }
+
   &-checkbox-label {
     font-size: getRem(9);
     display: flex;
@@ -57,6 +77,11 @@ input[type="password"] {
 
 input[type="text"] {
   background-image: url("@/assets/images/user.svg");
+}
+
+input[type="number"]{
+  padding-left: getRem(20);
+  padding-right: getRem(10);
 }
 
 input[type="checkbox"] {

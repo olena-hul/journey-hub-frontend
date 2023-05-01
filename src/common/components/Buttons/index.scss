@@ -11,10 +11,22 @@
   cursor: pointer;
   font-weight: 500;
 
-  &:hover{
+  &:hover {
     border-width: getRem(1);
     border-color: $backgroundSecondary;
     background-color: $contentTextSecondary;
+  }
+
+  &-inverted {
+    @extend .button;
+    background-color: $contentText;
+    color: $backgroundSecondary;
+    border-color: $backgroundSecondary;
+
+    &:hover {
+      background-color: $backgroundSecondary;
+      color: $contentText;
+    }
   }
 
   &:disabled {

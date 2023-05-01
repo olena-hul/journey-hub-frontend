@@ -24,7 +24,6 @@ export default defineComponent({
       apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
       version: "quarterly",
     });
-    console.log(this.store.selectedDestination);
 
     loader.load().then(() => {
       initMap(this.latitude, this.longitude);

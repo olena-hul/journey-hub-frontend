@@ -34,3 +34,7 @@ export function addDays(date: Date, dayNumber: number = 1) {
 
   return new Date(date.getTime() + 24 * 60 * 60 * 1000 * (dayNumber - 1)); // Add n days to the timestamp (24 hours * 60 minutes * 60 seconds * 1000 milliseconds)
 }
+
+export function formatDateToBackendFormat(date: Date) {
+  return date.toISOString().slice(0, 10);
+}

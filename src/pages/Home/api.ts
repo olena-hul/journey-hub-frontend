@@ -4,7 +4,7 @@ import type { APIResponse } from "@/common/interfaces";
 
 const USER_URL = `${API_URL}auth/user`;
 const REGISTER_URL = `${API_URL}auth/register`;
-const DESTINATION_URL = `${API_URL}destinations/`;
+const DESTINATION_URL = `${API_URL}planning/destinations/`;
 
 export interface SignInInput {
   email: string;

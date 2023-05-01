@@ -18,6 +18,7 @@ import router from "@/router";
 import { LOCALSTORAGE_KEYS } from "@/common/constants";
 
 interface User {
+  id: number;
   first_name: string;
   last_name: string;
   email: string;

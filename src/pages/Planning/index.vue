@@ -29,24 +29,39 @@
       <h2 class="planning-top-places">Top places</h2>
       <TopPlacesCarousel />
       <div class="planning-budget-container">
-        <h3>Your budget - 0$</h3>
+        <h3>
+          Your budget - {{ planningStore.budget.amount }}
+          {{ planningStore.budget.currency }}
+        </h3>
         <img
+          @click="() => (isBudgetPopupOpen = true)"
           alt="Pencil"
           :src="Pencil"
           class="planning-heading-date-form-pencil-icon"
         />
-        <PrimaryButton class-name="planning-budget-container-suggest-button">
+        <PrimaryButton
+          :input-props="{
+            disabled: suggestTripButtonDisabled(),
+          }"
+          class-name="planning-budget-container-suggest-button"
+        >
           Suggest trip
         </PrimaryButton>
       </div>
 
-      <DailyActivities
-        :day="destinationStore.selectedDates?.at(0)"
-        :day-number="i"
-        :key="i"
-        v-for="i in getDaysBetweenDates() + 1"
-      />
+      <div v-if="getDaysBetweenDates()">
+        <DailyActivities
+          :day="destinationStore.selectedDates?.at(0)"
+          :day-number="i"
+          :key="i"
+          v-for="i in getDaysBetweenDates() + 1"
+        />
+      </div>
     </div>
+    <budget-popup
+      :is-open="isBudgetPopupOpen"
+      :on-close="() => (isBudgetPopupOpen = false)"
+    />
     <GoogleMap
       :latitude="destinationStore.selectedDestination?.location.latitude"
       :longitude="destinationStore.selectedDestination?.location.longitude"
@@ -71,11 +86,21 @@ import GoogleMap from "@/pages/Planning/components/Map.vue";
 import PrimaryButton from "@/common/components/Buttons/PrimaryButton.vue";
 import DailyActivities from "@/pages/Planning/components/DailyActivities.vue";
 import { useDestinationStore } from "@/pages/Home/store/destinations";
-import { formatDate } from "./utils";
+import { formatDate, formatDateToBackendFormat } from "./utils";
+import { LOCALSTORAGE_KEYS } from "@/common/constants";
+import BudgetPopup from "@/pages/Planning/components/BudgetPopup.vue";
+import { usePlanningStore } from "@/pages/Planning/store/planning";
+import { useAuthStore } from "@/pages/Home/store/auth";
 
 export default defineComponent({
   name: "planning-page",
-  components: { DailyActivities, PrimaryButton, GoogleMap, TopPlacesCarousel },
+  components: {
+    BudgetPopup,
+    DailyActivities,
+    PrimaryButton,
+    GoogleMap,
+    TopPlacesCarousel,
+  },
   data: () => ({
     BackIcon,
     Calendar,
@@ -87,6 +112,9 @@ export default defineComponent({
     StarPentagon,
     day: new Date(),
     destinationStore: useDestinationStore(),
+    isBudgetPopupOpen: false,
+    authStore: useAuthStore(),
+    planningStore: usePlanningStore(),
   }),
   methods: {
     formatDate,
@@ -102,6 +130,66 @@ export default defineComponent({
     },
     async onBackClick() {
       await router.back();
+    },
+    suggestTripButtonDisabled() {
+      return this.planningStore.budget?.amount === 0;
+    },
+    async getTrip(start_date: Date, end_date: Date, destination_id: number) {
+      if (this.authStore.user) {
+        const trip = await this.planningStore.getTrip(
+          formatDateToBackendFormat(start_date),
+          formatDateToBackendFormat(end_date),
+          destination_id
+        );
+        if (!trip) {
+          await this.planningStore.createTrip({
+            start_date: formatDateToBackendFormat(start_date),
+            end_date: formatDateToBackendFormat(end_date),
+            destination: destination_id,
+            user: this.authStore.user.id,
+          });
+        }
+      }
+    },
+  },
+  mounted() {
+    if (this.destinationStore.selectedDates?.length === 0) {
+      let dates = localStorage.getItem(LOCALSTORAGE_KEYS.selectedDates);
+      const destination = localStorage.getItem(
+        LOCALSTORAGE_KEYS.selectedDestination
+      );
+      if (dates && destination) {
+        dates = JSON.parse(dates);
+        const parsedDates = dates && [new Date(dates[0]), new Date(dates[1])];
+        this.destinationStore.saveUserChoice(
+          parsedDates as Date[],
+          JSON.parse(destination),
+          false
+        );
+      } else {
+        router.push("/");
+      }
+    }
+  },
+  computed: {
+    user() {
+      return this.authStore.user;
+    },
+  },
+  watch: {
+    user(newValue) {
+      if (newValue) {
+        if (
+          this.destinationStore.selectedDates &&
+          this.destinationStore.selectedDestination
+        ) {
+          this.getTrip(
+            this.destinationStore.selectedDates[0],
+            this.destinationStore.selectedDates[1],
+            this.destinationStore.selectedDestination.id
+          );
+        }
+      }
     },
   },
 });

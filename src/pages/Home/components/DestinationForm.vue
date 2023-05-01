@@ -4,6 +4,7 @@
       <img :src="pointImage" alt="Point image" />
       <SearchSelect
         :options="store.destinationsList"
+        track-by="name"
         :custom-label="customLabel"
         v-model="selectedDestination"
       />
@@ -66,10 +67,6 @@ export default defineComponent({
       this.$router.push({
         name: "Plan",
       });
-    },
-
-    onCalendarClick() {
-      this.$refs.datepicker?.$refs.internalRef.openMenu();
     },
   },
   mounted() {
