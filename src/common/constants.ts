@@ -10,7 +10,7 @@ export const BUDGET_CATEGORIES = [
   "Accommodation",
   "Transportation",
   "Food and Drink",
-  "Activities and Entertainment",
+  "Activities",
   "Shopping",
   "Miscellaneous",
 ];

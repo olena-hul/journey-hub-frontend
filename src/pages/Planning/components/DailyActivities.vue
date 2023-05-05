@@ -5,42 +5,69 @@
         Day {{ dayNumber }}
       </h4>
       <span class="planning-daily-activity-date-container-day">
-        ({{ formatDate(addDays(day, dayNumber)) }})</span
+        ({{ formatDate(day) }})</span
       >
     </div>
-    <div class="planning-daily-activity-card">
+
+    <div
+      :key="activity.day"
+      v-for="activity in activities"
+      class="planning-daily-activity-card"
+    >
       <img
         :src="Museum"
         alt="Attraction icon"
         class="planning-daily-activity-card-icon"
       />
       <div class="planning-daily-activity-card-center">
-        <h4>Lovre Museum</h4>
+        <h6>{{ activity.name }}</h6>
         <div class="planning-daily-activity-card-center-details">
           <img :src="Clock" alt="clock icon" />
-          <span> 2 hours </span>
+          <span> {{ activity.duration }} hours </span>
           <img :src="Price" alt="price icon" />
-          <span> 17 $</span>
+          <span>
+            {{
+              activity.currency === this.planningStore.budget?.currency
+                ? activity.price
+                : convertCurrency(
+                    this.planningStore.budget?.currency || "$",
+                    activity.price
+                  )
+            }}
+            {{
+              activity.currency || this.planningStore.budget?.currency || "$"
+            }}</span
+          >
         </div>
         <span>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis
-          velit nec nisl eleifend rutrum. Aliquam erat eros, dignissim vitae
-          auctor vel, consectetur et ligula. Etiam mollis quis ante eu rutrum.
-          Vivamus faucibus odio sodales urna venenatis malesuada.
+          {{ activity.description }}
         </span>
       </div>
       <img
-        :src="Lovre"
+        :src="activity.image_urls?.at(0) || Lovre"
         alt="Attraction image"
         class="planning-daily-activity-card-attraction-image"
       />
+      <img
+        @click="() => onAttractionRemove(activity)"
+        :src="RemoveIcon"
+        class="planning-daily-activity-remove"
+        alt="Remove icon"
+      />
     </div>
-    <img
-      :src="RemoveIcon"
-      class="planning-daily-activity-remove"
-      alt="Remove icon"
-    />
   </div>
+  <AddPlace
+    v-if="
+      this.planningStore.newPlaceVisible &&
+      formatDateToBackendFormat(this.day) === this.planningStore.selectedDay
+    "
+    :options="planningStore.attractions"
+    track-by="name"
+    :on-attraction-select="onAttractionSelect"
+  />
+  <span @click="onAddNewPlaceClick" class="planning-daily-activity-add-place">
+    + Add a place</span
+  >
 </template>
 
 <script lang="ts">
@@ -51,15 +78,48 @@ import Clock from "@/assets/images/clock.png";
 import Price from "@/assets/images/price-tag.png";
 import Lovre from "@/assets/images/Lovre.png";
 import RemoveIcon from "@/assets/images/cross.png";
-import { addDays } from "../utils";
+import { convertCurrency, formatDateToBackendFormat } from "../utils";
+import { usePlanningStore } from "@/pages/Planning/store/planning";
+import AddPlace from "@/pages/Planning/components/AddPlaceComponent.vue";
+import type { Attraction } from "@/pages/Planning/api";
 
 export default defineComponent({
   name: "DailyActivities",
-  methods: { addDays, formatDate },
+  components: { AddPlace },
+  methods: {
+    convertCurrency,
+    formatDateToBackendFormat,
+    formatDate,
+    onAddNewPlaceClick() {
+      if (!this.day) {
+        return;
+      }
+      this.planningStore.newPlaceVisible = true;
+      this.planningStore.selectedDay = formatDateToBackendFormat(this.day);
+    },
+    onAttractionSelect(attraction: Attraction) {
+      if (!this.day) {
+        return;
+      }
+      const formattedDate = formatDateToBackendFormat(this.day);
+      this.planningStore.plannedTrip[formattedDate].push(attraction);
+      this.planningStore.newPlaceVisible = false;
+      this.planningStore.calculateExpenses();
+    },
+    onAttractionRemove(attraction: Attraction) {
+      if (!this.day) {
+        return;
+      }
+      const formattedDate = formatDateToBackendFormat(this.day);
+      this.planningStore.plannedTrip[formattedDate].pop(attraction);
+      this.planningStore.calculateExpenses();
+    },
+  },
   props: {
     dayNumber: Number,
     day: Date,
     attractionData: Object,
+    activities: Array,
   },
   data: () => ({
     Museum,
@@ -67,6 +127,7 @@ export default defineComponent({
     Price,
     Lovre,
     RemoveIcon,
+    planningStore: usePlanningStore(),
   }),
 });
 </script>

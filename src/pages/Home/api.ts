@@ -18,7 +18,7 @@ export interface BaseSignUpInput {
   role: string;
 }
 
-interface Location {
+export interface Location {
   latitude: number;
   longitude: number;
 }

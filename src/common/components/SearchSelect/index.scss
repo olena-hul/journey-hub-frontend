@@ -8,7 +8,7 @@
 }
 
 .multiselect__select, .multiselect__tags, .multiselect__input, .multiselect__single {
-  background-color: $backgroundColorDarker !important;
+  background-color: transparent !important;
   background-image: none !important;
   border: none !important;
   @extend .font;

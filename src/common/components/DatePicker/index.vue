@@ -10,7 +10,7 @@
       <img :src="Calendar" alt="Calendar icon" class="icon" />
     </template>
     <template #dp-input="{ value }">
-      <span :class="value ? 'value' : 'placeholder'">{{
+      <span :class="className ? className : ''">{{
         value ? value : "Select date"
       }}</span>
     </template>
@@ -28,6 +28,9 @@ export default defineComponent({
   name: "date-picker",
   props: {
     date: Object,
+    className: {
+      required: false,
+    },
   },
   data: () => ({
     internalRef,

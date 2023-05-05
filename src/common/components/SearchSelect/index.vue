@@ -4,12 +4,13 @@
     <VueMultiselect
       v-model="internalVal"
       :options="options"
-      placeholder="Select location"
+      :placeholder="placeholder || 'Select location'"
       select-label=""
       deselectLabel=""
       :track-by="trackBy"
       label="name"
       :customLabel="customLabel"
+      @select="onSelect"
     >
     </VueMultiselect>
   </div>
@@ -32,6 +33,14 @@ export default defineComponent({
     trackBy: {
       required: false,
       type: String,
+    },
+    placeholder: {
+      required: false,
+      type: String,
+    },
+    onSelect: {
+      required: false,
+      type: Function,
     },
     modelValue: Object,
   },

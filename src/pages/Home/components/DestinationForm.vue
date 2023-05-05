@@ -32,6 +32,7 @@ import DatePicker from "@/common/components/DatePicker/index.vue";
 import SearchSelect from "@/common/components/SearchSelect/index.vue";
 import { useDestinationStore } from "@/pages/Home/store/destinations";
 import type { Destination } from "@/pages/Home/api";
+import { usePlanningStore } from "@/pages/Planning/store/planning";
 
 const datepicker = ref();
 const date = ref();
@@ -53,8 +54,9 @@ export default defineComponent({
       date,
       store: useDestinationStore(),
       customLabel,
-      selectedDestination: null,
+      selectedDestination: null as Destination | null,
       selectedDates: [],
+      planningStore: usePlanningStore(),
     };
   },
   methods: {
@@ -63,7 +65,8 @@ export default defineComponent({
         return;
       }
       this.store.saveUserChoice(this.selectedDates, this.selectedDestination);
-      console.log(this.store.selectedDates);
+      await this.planningStore.getAttractions(this.selectedDestination.id);
+      this.planningStore.getPlannedTrip(this.selectedDates);
       this.$router.push({
         name: "Plan",
       });

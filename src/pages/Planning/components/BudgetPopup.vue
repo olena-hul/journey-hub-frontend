@@ -132,6 +132,8 @@ export default {
             trip: this.planningStore.trip.id,
           });
         }
+      } else {
+        this.planningStore.setBudget(this.budget);
       }
       this.onClose();
     },

@@ -1,18 +1,15 @@
 <template>
   <ImagesCarousel class-name="planning-top-places-carousel" parent="planning">
     <CarouselItem
-      :key="i"
+      :key="attraction.id"
       class-name="planning-top-places-carousel-item"
-      v-for="i in 10"
+      v-for="attraction in this.planningStore.attractions"
     >
       <div class="planning-top-places-carousel-item-card">
-        <img :src="EifelTower" alt="Popular place image" />
-        <h4>Eifel Tower</h4>
+        <img :src="attraction.image_urls?.at(0)" alt="Popular place image" />
+        <h6>{{ attraction.name }}</h6>
         <span>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis
-          velit nec nisl eleifend rutrum. Aliquam erat eros, dignissim vitae
-          auctor vel, consectetur et ligula. Etiam mollis quis ante eu rutrum.
-          Vivamus faucibus odio sodales urna venenatis malesuada.
+          {{ attraction.description }}
         </span>
       </div>
     </CarouselItem>
@@ -24,12 +21,14 @@ import ImagesCarousel from "@/common/components/Carousel/Carousel.vue";
 import CarouselItem from "@/common/components/Carousel/CarouselItem.vue";
 import EifelTower from "@/assets/images/EifelTower.png";
 import { defineComponent } from "vue";
+import { usePlanningStore } from "@/pages/Planning/store/planning";
 
 export default defineComponent({
   name: "top-places-carousel",
   components: { CarouselItem, ImagesCarousel },
   data: () => ({
     EifelTower,
+    planningStore: usePlanningStore(),
   }),
 });
 </script>

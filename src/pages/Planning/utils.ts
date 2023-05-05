@@ -1,12 +1,5 @@
-export function initMap(latitude: number, longitude: number): void {
-  const map: google.maps.Map = new google.maps.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      center: { lat: latitude, lng: longitude },
-      zoom: 8,
-    }
-  );
-}
+import type { MyObject } from "@/common/interfaces";
+
 export function formatDate(date: Date) {
   date = date || new Date();
   const day = date.getDate().toString().padStart(2, "0"); // Get the day and pad it with leading zeroes if needed
@@ -36,5 +29,17 @@ export function addDays(date: Date, dayNumber: number = 1) {
 }
 
 export function formatDateToBackendFormat(date: Date) {
-  return date.toISOString().slice(0, 10);
+  const [month, day, year] = date.toLocaleDateString().split("/");
+  return `${year}-${("0" + month).slice(-2)}-${("0" + day).slice(-2)}`;
 }
+
+const CURRENCY_MAPPING_USD: MyObject = {
+  $: 1,
+  "₴": 38,
+  "€": 0.98,
+};
+
+export const convertCurrency = (target: string, amount: number) => {
+  const rate = CURRENCY_MAPPING_USD[target];
+  return amount * rate;
+};

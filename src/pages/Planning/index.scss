@@ -59,9 +59,17 @@
         width: getRem(12);
         height: getRem(12);
 
-        &:hover{
+        &:hover {
           cursor: pointer;
         }
+      }
+
+      .dp__input_wrap {
+        width: getRem(170) !important;
+      }
+
+      &-input {
+        width: getRem(120) !important;
       }
     }
 
@@ -73,6 +81,17 @@
       @include sm-breakpoint {
         width: calc(100wv / 2 - getRem($basePaddingHorizontalMd * 2));
       }
+    }
+  }
+
+  &-suggestion-in-progress {
+    display: flex;
+    margin: getRem(20) auto;
+    column-gap: getRem(20);
+    justify-content: center;
+
+    & > span {
+      font-size: getRem(13);
     }
   }
 
@@ -182,7 +201,7 @@
           }
         }
 
-        &-selected{
+        &-selected {
           @extend .planning-budget-container-popup-currencies-item;
           background-color: $backgroundColorDarkerHover;
         }
@@ -221,7 +240,6 @@
   }
 
   &-daily-activity {
-    position: relative;
     margin-top: getRem(25);
 
     &-date-container {
@@ -239,7 +257,50 @@
       }
     }
 
+    &-add-place {
+      display: inline-block;
+      margin-top: getRem(10);
+      margin-bottom: getRem(20);
+      font-size: getRem(12);
+      font-weight: bold;
+
+      &-search {
+        display: flex;
+        margin-top: getRem(20);
+        padding-left: getRem(5);
+        align-items: center;
+        background-color: $contentText;
+        box-shadow: getRem(4) getRem(4) getRem(20) $boxShadow;
+        border-radius: getRem(7);
+        height: getRem(30);
+
+        & > img {
+          width: getRem(15);
+          height: getRem(15);
+        }
+
+        & .multiselect__placeholder, & .multiselect__input, & .multiselect__tags {
+          color: $disabled !important;
+          font-weight: 500;
+        }
+
+        & .multiselect__single {
+          font-weight: 500;
+        }
+
+        & .multiselect__tags {
+          width: getRem(300);
+        }
+      }
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+
     &-card {
+      position: relative;
       margin-top: getRem(10);
       height: getRem(100);
       background-color: $contentText;
@@ -289,7 +350,10 @@
       }
 
       &-attraction-image {
-        width: 33%;
+        position: relative;
+        width: getRem(100);
+        flex-grow: 0;
+        flex-shrink: 0;
         height: 100%;
       }
     }
@@ -299,7 +363,27 @@
       width: getRem(15);
       height: getRem(15);
       right: - getRem(5);
-      top: getRem(20);
+      top: - getRem(10);
+
+      &:hover {
+        cursor: pointer;
+      }
     }
+  }
+
+  &-budget-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: getRem(20);
+    margin-top: getRem(30);
+    margin-bottom: getRem(40);
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: getRem(40);
+    column-gap: getRem(20);
   }
 }

@@ -15,3 +15,7 @@ export interface AttractionData {
   type: string;
   image_url: string;
 }
+
+export interface MyObject {
+  [key: string]: any;
+}

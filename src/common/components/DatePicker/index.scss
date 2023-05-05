@@ -31,11 +31,12 @@
 }
 
 .dp__input_wrap {
-   width: getRem(120) !important;
+   width: getRem(150) !important;
 
       & > span {
          margin-top: - getRem(3);
          display: flex;
+         align-items: center;
          font-family: 'Montserrat', sans-serif !important;
          font-size: getRem(12);
          color: black;

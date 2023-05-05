@@ -1,6 +1,8 @@
 <template>
   <div class="planning">
     <div id="planning" class="planning-form">
+      <AlertComponent v-if="alertMessage" type="info" :message="alertMessage" />
+
       <div class="planning-heading">
         <img
           :src="BackIcon"
@@ -10,14 +12,11 @@
         />
         <h1>Trip to {{ destinationStore.selectedDestination?.name }}</h1>
         <div class="planning-heading-date-form">
-          <img alt="Calendar" :src="Calendar" />
-          <span>{{ formatDate(destinationStore.selectedDates?.at(0)) }}</span>
-          -
-          <span>{{ formatDate(destinationStore.selectedDates?.at(1)) }}</span>
-          <img
-            alt="Pencil"
-            :src="Pencil"
-            class="planning-heading-date-form-pencil-icon"
+          <!--          <img alt="Calendar" :src="Calendar" />-->
+          <DatePicker
+            ref="datepicker"
+            v-model="destinationStore.selectedDates"
+            class-name="planning-heading-date-form-input"
           />
         </div>
       </div>
@@ -40,6 +39,7 @@
           class="planning-heading-date-form-pencil-icon"
         />
         <PrimaryButton
+          @click="onSuggestClick"
           :input-props="{
             disabled: suggestTripButtonDisabled(),
           }"
@@ -49,13 +49,34 @@
         </PrimaryButton>
       </div>
 
-      <div v-if="getDaysBetweenDates()">
+      <div
+        v-if="planningStore.suggestionInProgress"
+        class="planning-suggestion-in-progress"
+      >
+        <spinner color="#78A983FF" />
+        <span> Your trip suggestion is in progress </span>
+      </div>
+      <div v-if="getDaysBetweenDates() && !planningStore.suggestionInProgress">
         <DailyActivities
-          :day="destinationStore.selectedDates?.at(0)"
-          :day-number="i"
-          :key="i"
-          v-for="i in getDaysBetweenDates() + 1"
+          :day="parseDate(key)"
+          :day-number="Number(index) + 1"
+          :key="index"
+          :activities="value as any"
+          v-for="[index, [key, value]] of Object.entries(
+            Object.entries(planningStore.plannedTrip)
+          )"
         />
+      </div>
+      <div class="planning-budget-chart">
+        <h4>Expenses chart</h4>
+        <BudgetChart
+          :estimated-expenses="this.planningStore.estimatedExpenses"
+          :actual-expenses="this.planningStore.actualExpenses"
+        />
+      </div>
+      <div class="planning-footer">
+        <PrimaryButton class-name="button-inverted"> Cancel </PrimaryButton>
+        <PrimaryButton @click="onSaveClicked">Save trip</PrimaryButton>
       </div>
     </div>
     <budget-popup
@@ -91,15 +112,24 @@ import { LOCALSTORAGE_KEYS } from "@/common/constants";
 import BudgetPopup from "@/pages/Planning/components/BudgetPopup.vue";
 import { usePlanningStore } from "@/pages/Planning/store/planning";
 import { useAuthStore } from "@/pages/Home/store/auth";
+import DatePicker from "@/common/components/DatePicker/index.vue";
+import { parseDate } from "@/common/utils";
+import Spinner from "vue-spinner-component/src/Spinner.vue";
+import BudgetChart from "@/pages/Planning/components/BudgetChart.vue";
+import AlertComponent from "@/common/components/Alerts/index.vue";
 
 export default defineComponent({
   name: "planning-page",
   components: {
+    AlertComponent,
+    BudgetChart,
+    DatePicker,
     BudgetPopup,
     DailyActivities,
     PrimaryButton,
     GoogleMap,
     TopPlacesCarousel,
+    Spinner,
   },
   data: () => ({
     BackIcon,
@@ -115,8 +145,11 @@ export default defineComponent({
     isBudgetPopupOpen: false,
     authStore: useAuthStore(),
     planningStore: usePlanningStore(),
+    selectedDates: [],
+    alertMessage: null as string | null,
   }),
   methods: {
+    parseDate,
     formatDate,
     getDaysBetweenDates() {
       // Convert the dates to milliseconds
@@ -132,7 +165,40 @@ export default defineComponent({
       await router.back();
     },
     suggestTripButtonDisabled() {
-      return this.planningStore.budget?.amount === 0;
+      return (
+        this.planningStore.budget?.amount === 0 ||
+        this.planningStore.suggestionInProgress
+      );
+    },
+    onSuggestClick() {
+      if (
+        (this.selectedDates.length == 0 &&
+          this.destinationStore.selectedDates.length == 0) ||
+        !this.planningStore.budget ||
+        !this.destinationStore.selectedDestination
+      ) {
+        return;
+      }
+      this.planningStore.suggestTrip({
+        start_date:
+          (
+            this.selectedDates.at(0) ||
+            this.destinationStore.selectedDates.at(0)
+          )
+            ?.toISOString()
+            .slice(0, 10) || new Date().toISOString().slice(0, 10),
+        end_date:
+          (
+            this.selectedDates.at(1) ||
+            this.destinationStore.selectedDates.at(1)
+          )
+            ?.toISOString()
+            .slice(0, 10) || new Date().toISOString().slice(0, 10),
+        budget: this.planningStore.budget.amount,
+        currency: this.planningStore.budget.currency,
+        destination: this.destinationStore.selectedDestination.name,
+      });
+      this.planningStore.suggestionInProgress = true;
     },
     async getTrip(start_date: Date, end_date: Date, destination_id: number) {
       if (this.authStore.user) {
@@ -151,6 +217,14 @@ export default defineComponent({
         }
       }
     },
+    async onSaveClicked() {
+      await this.planningStore.createTripAttractions();
+      this.alertMessage = "Your trip was successfully saved";
+      setTimeout(() => {
+        this.alertMessage = null;
+        router.push("/");
+      }, 2000);
+    },
   },
   mounted() {
     if (this.destinationStore.selectedDates?.length === 0) {
@@ -161,11 +235,13 @@ export default defineComponent({
       if (dates && destination) {
         dates = JSON.parse(dates);
         const parsedDates = dates && [new Date(dates[0]), new Date(dates[1])];
+        const parsedDestination = JSON.parse(destination);
         this.destinationStore.saveUserChoice(
           parsedDates as Date[],
-          JSON.parse(destination),
+          parsedDestination,
           false
         );
+        this.planningStore.getAttractions(parsedDestination.id);
       } else {
         router.push("/");
       }
@@ -174,6 +250,12 @@ export default defineComponent({
   computed: {
     user() {
       return this.authStore.user;
+    },
+    planningTripDates() {
+      return this.destinationStore.selectedDates;
+    },
+    budget() {
+      return this.planningStore.budget;
     },
   },
   watch: {
@@ -190,6 +272,13 @@ export default defineComponent({
           );
         }
       }
+    },
+    planningTripDates(newValue) {
+      // iterate through plannedTrip dates
+      this.planningStore.getPlannedTrip(newValue);
+    },
+    budget(newValue) {
+      this.planningStore.calculateExpenses();
     },
   },
 });
