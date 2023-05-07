@@ -113,7 +113,7 @@ export async function deleteEntry(entryId: number) {
 }
 
 export async function getAttractions(
-  destination_id: number
+  destination_id: number | null
 ): Promise<APIResponse<Attraction[]>> {
   return await http.get(ATTRACTIONS_URL, {
     params: {

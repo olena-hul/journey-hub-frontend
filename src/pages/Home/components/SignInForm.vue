@@ -54,7 +54,6 @@
 <script lang="ts">
 import OverlayPopup from "@/common/components/Popup/index.vue";
 import TextInput from "@/common/components/Inputs/TextInput.vue";
-import CheckboxInput from "@/common/components/Inputs/Checkbox.vue";
 import PrimaryButton from "@/common/components/Buttons/PrimaryButton.vue";
 import GmailIcon from "@/assets/images/Gmail.svg";
 import type { SignInInput } from "@/pages/Home/api";
@@ -74,6 +73,10 @@ export default defineComponent({
     onClose: Function,
     setAlertMessage: Function,
     openSignUpPopup: Function,
+    stayOnPage: {
+      type: Boolean,
+      required: false,
+    },
   },
   data() {
     return {
@@ -102,7 +105,9 @@ export default defineComponent({
         }, 2000);
         return;
       }
-      await router.push("/profile");
+      if (!this.stayOnPage) {
+        await router.push("/profile");
+      }
     },
     async googleSignIn() {
       this.setSubmitDisabled(true);
@@ -115,7 +120,9 @@ export default defineComponent({
         }, 2000);
         return;
       }
-      await router.push("/profile");
+      if (!this.stayOnPage) {
+        await router.push("/profile");
+      }
     },
   },
 });

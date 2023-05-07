@@ -1,21 +1,21 @@
 <template>
   <ImagesCarousel
-    identifier="top-places"
-    :title="title"
+    identifier="top-destinations"
+    title="Top destinations for you"
     class-name="planning-top-places-carousel"
-    parent="planning"
+    parent="main-content"
   >
     <CarouselItem
-      identifier="top-places"
-      :key="attraction.id"
+      identifier="top-destinations"
+      :key="destination.id"
       class-name="planning-top-places-carousel-item"
-      v-for="attraction in this.planningStore.attractions"
+      v-for="destination in this.destinationStore.destinations"
     >
       <div class="planning-top-places-carousel-item-card">
-        <img :src="attraction.image_urls?.at(0)" alt="Popular place image" />
-        <h6>{{ attraction.name }}</h6>
+        <img :src="destination.image_urls?.at(0)" alt="Popular place image" />
+        <h6>{{ destination.name }}</h6>
         <span>
-          {{ attraction.description }}
+          {{ destination.description }}
         </span>
       </div>
     </CarouselItem>
@@ -27,21 +27,15 @@ import ImagesCarousel from "@/common/components/Carousel/Carousel.vue";
 import CarouselItem from "@/common/components/Carousel/CarouselItem.vue";
 import EifelTower from "@/assets/images/EifelTower.png";
 import { defineComponent } from "vue";
-import { usePlanningStore } from "@/pages/Planning/store/planning";
+import { useDestinationStore } from "@/pages/Home/store/destinations";
 
 export default defineComponent({
-  name: "top-places-carousel",
+  name: "top-destinations-carousel",
   components: { CarouselItem, ImagesCarousel },
   data: () => ({
     EifelTower,
-    planningStore: usePlanningStore(),
+    destinationStore: useDestinationStore(),
   }),
-  props: {
-    title: {
-      required: false,
-      type: String,
-    },
-  },
 });
 </script>
 

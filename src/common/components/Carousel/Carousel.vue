@@ -1,5 +1,8 @@
 <template>
   <div class="carousel-navigation-button-container">
+    <h4 class="carousel-navigation-button-container-title" v-if="title">
+      {{ title }}
+    </h4>
     <NavigationButton
       @click="prevSlide"
       direction="left"
@@ -41,14 +44,19 @@ export default defineComponent({
     };
   },
   props: {
+    identifier: String,
     parent: {
       required: false,
       default: null,
     },
     className: String,
+    title: {
+      required: false,
+      type: String,
+    },
   },
   mounted() {
-    this.store.carouselCurrentSlide = 0;
+    this.store.currentSlides[this.identifier as any] = 0;
   },
 
   methods: {
@@ -94,10 +102,10 @@ export default defineComponent({
     prevSlide() {
       this.disableButtons();
       this.isRightActive = true;
-      if (this.store.carouselCurrentSlide === 1) {
+      if (this.store.currentSlides[this.identifier as any] === 1) {
         this.isLeftActive = false;
       }
-      if (this.store.carouselCurrentSlide === 0) {
+      if (this.store.currentSlides[this.identifier as any] === 0) {
         setTimeout(() => {
           this.rightDisabled = false;
         }, 250);
@@ -106,7 +114,7 @@ export default defineComponent({
       setTimeout(() => {
         this.enableButtons();
       }, 250);
-      this.store.carouselCurrentSlide--;
+      this.store.currentSlides[this.identifier as any]--;
     },
     nextSlide() {
       this.disableButtons();
@@ -118,7 +126,7 @@ export default defineComponent({
         setTimeout(() => {
           this.leftDisabled = false;
         }, 250);
-        this.store.carouselCurrentSlide++;
+        this.store.currentSlides[this.identifier as any]++;
       }
 
       setTimeout(() => {

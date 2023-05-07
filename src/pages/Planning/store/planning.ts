@@ -1,4 +1,4 @@
-import { acceptHMRUpdate, defineStore } from "pinia";
+import { defineStore } from "pinia";
 import type {
   Attraction,
   Budget,
@@ -23,7 +23,7 @@ import { BUDGET_CATEGORIES } from "@/common/constants";
 import type { MyObject } from "@/common/interfaces";
 
 interface PlanningState {
-  budget: Budget | null;
+  budget: Budget;
   trip: Trip | null;
   plannedTrip: any;
   attractions: Attraction[];
@@ -65,11 +65,13 @@ export const usePlanningStore = defineStore({
       this.trip = trip.data.length > 0 ? trip.data[0] : null;
       if (this.trip && this.trip.budgets.length > 0) {
         this.budget = this.trip.budgets[0];
+      } else if (this.trip) {
+        this.budget.trip = this.trip.id;
       }
       return this.trip;
     },
 
-    async getAttractions(destination_id: number) {
+    async getAttractions(destination_id: number | null) {
       const attractions = await getAttractions(destination_id);
       this.attractions = attractions.data;
     },
@@ -80,6 +82,9 @@ export const usePlanningStore = defineStore({
     async createTrip(body: TripInput) {
       const trip = await createTrip(body);
       this.trip = trip.data;
+      if (this.trip) {
+        this.budget.trip = this.trip.id;
+      }
     },
 
     async createBudget(body: BudgetInput) {

@@ -14,7 +14,7 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
-      path: "/profile",
+      path: "/profile/:anchor?",
       name: "Profile",
       component: Profile,
       meta: { requiresAuth: true },

@@ -6,7 +6,7 @@
       :options="planningStore.attractions"
       track-by="name"
       :on-select="onAttractionSelect"
-      placeholder="Search a place or choose on map"
+      :placeholder="placeholder || 'Search a place or choose on map'"
     />
   </div>
 </template>
@@ -28,6 +28,10 @@ export default defineComponent({
   },
   props: {
     onAttractionSelect: Function,
+    placeholder: {
+      required: false,
+      type: String,
+    },
   },
 });
 </script>

@@ -1,5 +1,6 @@
 <template>
-  <div class="planning">
+  <TripLoader v-if="loading" />
+  <div class="planning" v-if="!loading">
     <div id="planning" class="planning-form">
       <AlertComponent v-if="alertMessage" type="info" :message="alertMessage" />
 
@@ -12,7 +13,6 @@
         />
         <h1>Trip to {{ destinationStore.selectedDestination?.name }}</h1>
         <div class="planning-heading-date-form">
-          <!--          <img alt="Calendar" :src="Calendar" />-->
           <DatePicker
             ref="datepicker"
             v-model="destinationStore.selectedDates"
@@ -84,8 +84,21 @@
       :on-close="() => (isBudgetPopupOpen = false)"
     />
     <GoogleMap
+      v-if="!loading"
       :latitude="destinationStore.selectedDestination?.location.latitude"
       :longitude="destinationStore.selectedDestination?.location.longitude"
+    />
+    <SignInForm
+      :stay-on-page="true"
+      :set-alert-message="setAlertMessage"
+      :is-open="isLoginOpen"
+      :on-close="() => (isLoginOpen = false)"
+    />
+    <SignUpForm
+      :stay-on-page="true"
+      :set-alert-message="setAlertMessage"
+      :is-open="isSignUpOpen"
+      :on-close="() => (isSignUpOpen = false)"
     />
   </div>
 </template>
@@ -117,10 +130,16 @@ import { parseDate } from "@/common/utils";
 import Spinner from "vue-spinner-component/src/Spinner.vue";
 import BudgetChart from "@/pages/Planning/components/BudgetChart.vue";
 import AlertComponent from "@/common/components/Alerts/index.vue";
+import SignInForm from "@/pages/Home/components/SignInForm.vue";
+import SignUpForm from "@/pages/Home/components/SignUpForm.vue";
+import TripLoader from "@/pages/Planning/components/TripLoader.vue";
 
 export default defineComponent({
   name: "planning-page",
   components: {
+    TripLoader,
+    SignUpForm,
+    SignInForm,
     AlertComponent,
     BudgetChart,
     DatePicker,
@@ -147,6 +166,10 @@ export default defineComponent({
     planningStore: usePlanningStore(),
     selectedDates: [],
     alertMessage: null as string | null,
+    isLoginOpen: false,
+    isSignUpOpen: false,
+    saveClicked: false,
+    loading: false,
   }),
   methods: {
     parseDate,
@@ -218,12 +241,33 @@ export default defineComponent({
       }
     },
     async onSaveClicked() {
+      this.saveClicked = true;
+
+      if (!this.authStore.currentUser) {
+        this.openLoginPopup();
+        return;
+      }
+      this.loading = true;
+      if (this.planningStore.budget && !this.planningStore.budget.id) {
+        await this.planningStore.createBudget(this.planningStore.budget);
+      }
       await this.planningStore.createTripAttractions();
       this.alertMessage = "Your trip was successfully saved";
       setTimeout(() => {
         this.alertMessage = null;
         router.push("/");
       }, 2000);
+    },
+    setAlertMessage(value: string | null) {
+      this.alertMessage = value;
+    },
+    openLoginPopup() {
+      this.isSignUpOpen = false;
+      this.isLoginOpen = true;
+    },
+    openSignUpPopup() {
+      this.isLoginOpen = false;
+      this.isSignUpOpen = true;
     },
   },
   mounted() {
@@ -259,17 +303,23 @@ export default defineComponent({
     },
   },
   watch: {
-    user(newValue) {
+    async user(newValue) {
       if (newValue) {
+        if (this.saveClicked) {
+          this.loading = true;
+        }
         if (
           this.destinationStore.selectedDates &&
           this.destinationStore.selectedDestination
         ) {
-          this.getTrip(
+          await this.getTrip(
             this.destinationStore.selectedDates[0],
             this.destinationStore.selectedDates[1],
             this.destinationStore.selectedDestination.id
           );
+          if (this.saveClicked) {
+            await this.onSaveClicked();
+          }
         }
       }
     },

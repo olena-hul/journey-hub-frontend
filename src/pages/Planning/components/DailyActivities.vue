@@ -20,7 +20,16 @@
         class="planning-daily-activity-card-icon"
       />
       <div class="planning-daily-activity-card-center">
-        <h6>{{ activity.name }}</h6>
+        <div class="planning-daily-activity-card-center-header">
+          <h6>{{ activity.name }}</h6>
+          <img
+            v-if="editEnabled"
+            alt="Pencil"
+            :src="Pencil"
+            class="planning-heading-date-form-pencil-icon"
+            @click="editTripAttractionPopupOpen = true"
+          />
+        </div>
         <div class="planning-daily-activity-card-center-details">
           <img :src="Clock" alt="clock icon" />
           <span> {{ activity.duration }} hours </span>
@@ -61,6 +70,7 @@
       this.planningStore.newPlaceVisible &&
       formatDateToBackendFormat(this.day) === this.planningStore.selectedDay
     "
+    :placeholder="placeholder"
     :options="planningStore.attractions"
     track-by="name"
     :on-attraction-select="onAttractionSelect"
@@ -68,6 +78,10 @@
   <span @click="onAddNewPlaceClick" class="planning-daily-activity-add-place">
     + Add a place</span
   >
+  <edit-trip-attraction-popup
+    :is-open="editTripAttractionPopupOpen"
+    :on-close="() => (editTripAttractionPopupOpen = false)"
+  />
 </template>
 
 <script lang="ts">
@@ -82,10 +96,13 @@ import { convertCurrency, formatDateToBackendFormat } from "../utils";
 import { usePlanningStore } from "@/pages/Planning/store/planning";
 import AddPlace from "@/pages/Planning/components/AddPlaceComponent.vue";
 import type { Attraction } from "@/pages/Planning/api";
+import Pencil from "@/assets/images/pencil.png";
+import BudgetPopup from "@/pages/Planning/components/BudgetPopup.vue";
+import EditTripAttractionPopup from "@/pages/Profile/components/EditTripAttractionPopup.vue";
 
 export default defineComponent({
   name: "DailyActivities",
-  components: { AddPlace },
+  components: { EditTripAttractionPopup, BudgetPopup, AddPlace },
   methods: {
     convertCurrency,
     formatDateToBackendFormat,
@@ -120,6 +137,14 @@ export default defineComponent({
     day: Date,
     attractionData: Object,
     activities: Array,
+    placeholder: {
+      required: false,
+      type: String,
+    },
+    editEnabled: {
+      required: false,
+      type: Boolean,
+    },
   },
   data: () => ({
     Museum,
@@ -127,7 +152,9 @@ export default defineComponent({
     Price,
     Lovre,
     RemoveIcon,
+    Pencil,
     planningStore: usePlanningStore(),
+    editTripAttractionPopupOpen: false,
   }),
 });
 </script>

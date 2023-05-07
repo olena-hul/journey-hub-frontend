@@ -1,5 +1,6 @@
 import { reactive } from "vue";
+import type { MyObject } from "@/common/interfaces";
 
 export const store = reactive({
-  carouselCurrentSlide: 0,
+  currentSlides: {} as MyObject,
 });

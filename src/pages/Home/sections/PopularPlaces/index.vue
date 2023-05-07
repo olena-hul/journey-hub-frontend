@@ -1,8 +1,8 @@
 <template>
   <div class="home-popular-places">
     <h2 class="home-popular-places-title">Popular places for new experience</h2>
-    <PlacesImagesCarousel>
-      <CarouselItem>
+    <PlacesImagesCarousel identifier="places-images">
+      <CarouselItem identifier="places-images">
         <div class="home-popular-places-card">
           <img :src="PopularPlace1" alt="Popular place" />
           <span class="home-popular-places-card-title"
@@ -20,7 +20,7 @@
           </div>
         </div>
       </CarouselItem>
-      <CarouselItem>
+      <CarouselItem identifier="places-images">
         <div class="home-popular-places-card">
           <img :src="PopularPlace2" alt="Popular place" />
           <span class="home-popular-places-card-title"
@@ -36,7 +36,7 @@
           </div>
         </div>
       </CarouselItem>
-      <CarouselItem>
+      <CarouselItem identifier="places-images">
         <div class="home-popular-places-card">
           <img :src="PopularPlace3" alt="Popular place" />
           <span class="home-popular-places-card-title"
@@ -54,7 +54,7 @@
           </div>
         </div>
       </CarouselItem>
-      <CarouselItem>
+      <CarouselItem identifier="places-images">
         <div class="home-popular-places-card">
           <img :src="PopularPlace1" alt="Popular place" />
           <span class="home-popular-places-card-title"
@@ -72,7 +72,7 @@
           </div>
         </div>
       </CarouselItem>
-      <CarouselItem>
+      <CarouselItem identifier="places-images">
         <div class="home-popular-places-card">
           <img :src="PopularPlace2" alt="Popular place" />
           <span class="home-popular-places-card-title"
@@ -88,7 +88,7 @@
           </div>
         </div>
       </CarouselItem>
-      <CarouselItem>
+      <CarouselItem identifier="places-images">
         <div class="home-popular-places-card">
           <img :src="PopularPlace3" alt="Popular place" />
           <span class="home-popular-places-card-title"

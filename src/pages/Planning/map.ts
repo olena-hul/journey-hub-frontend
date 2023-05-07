@@ -5,11 +5,18 @@ export const useMap = () => {
   let map: google.maps.Map | null = null;
 
   const planningStore = usePlanningStore();
-  const initMap = (latitude: number, longitude: number): google.maps.Map => {
-    map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
-      center: { lat: latitude, lng: longitude },
-      zoom: 12,
-    });
+  const initMap = (
+    latitude: number,
+    longitude: number,
+    mapId: string | null = null
+  ): google.maps.Map => {
+    map = new google.maps.Map(
+      document.getElementById(mapId || "map") as HTMLElement,
+      {
+        center: { lat: latitude, lng: longitude },
+        zoom: 12,
+      }
+    );
     return map;
   };
 

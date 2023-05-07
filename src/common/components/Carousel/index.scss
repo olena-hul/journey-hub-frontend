@@ -23,6 +23,10 @@
       justify-content: flex-end;
       column-gap: getRem(15);
       margin-top: getRem(20);
+
+      &-title{
+        margin-right: auto;
+      }
     }
 
     &:disabled {

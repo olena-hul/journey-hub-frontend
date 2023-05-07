@@ -42,6 +42,7 @@ export const useAuthStore = defineStore({
       localStorage.setItem(LOCALSTORAGE_KEYS.isAuthenticated, "true");
     },
     setLoggedOut() {
+      this.user = null;
       localStorage.removeItem(LOCALSTORAGE_KEYS.isAuthenticated);
     },
     handleFirebaseError(e: firebase.FirebaseError) {

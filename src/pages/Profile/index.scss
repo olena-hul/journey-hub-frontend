@@ -1,0 +1,280 @@
+@import "@/styles/base";
+
+.profile {
+  padding: getRem($basePaddingHorizontalXs) getRem($basePaddingHorizontalSm);
+  min-height: 100vh;
+  height: max-content;
+  margin: 0 auto;
+  display: flex;
+  position: relative;
+  column-gap: getRem(30);
+
+  &-my-trip-card-small {
+    width: getRem(200);
+    height: getRem(85);
+    border-radius: getRem(10);
+    box-shadow: getRem(4) getRem(4) getRem(20) $boxShadow;
+    display: flex;
+    column-gap: getRem(10);
+    row-gap: getRem(10);
+    padding: getRem(10);
+    align-items: center;
+
+    & > img {
+      width: getRem(45);
+      height: getRem(45);
+      border-radius: getRem(10);
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      row-gap: getRem(8);
+
+      & > span {
+        font-size: getRem(14);
+        font-weight: bold;
+      }
+
+      & > div {
+        display: flex;
+        align-items: center;
+        font-size: getRem(9);
+        column-gap: getRem(4);
+        color: $disabled;
+        font-weight: 500;
+      }
+    }
+  }
+
+  &-left-aside {
+    display: flex;
+    flex-direction: column;
+
+    &-menu {
+      margin-top: getRem(40);
+      display: flex;
+      flex-direction: column;
+      row-gap: getRem(10);
+
+      &-active-item {
+        color: white;
+        background-color: $backgroundColorMenu;
+        box-shadow: getRem(4) getRem(4) getRem(15) $boxShadow;
+
+        border-radius: getRem(15);
+      }
+
+      & > a {
+        color: inherit;
+        text-decoration: none;
+        padding: getRem(10);
+        display: block;
+        font-size: getRem(15);
+        font-weight: 500;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    &-sign-out {
+      margin-top: auto;
+      bottom: getRem(40);
+    }
+  }
+
+  &-right-aside {
+    display: flex;
+    flex-direction: column;
+    row-gap: getRem(20);
+
+    &-profile {
+      display: flex;
+      align-items: center;
+      column-gap: getRem(10);
+
+      & > img {
+        width: getRem(35);
+        height: getRem(35);
+      }
+
+      &-name {
+        display: flex;
+        flex-direction: column;
+        row-gap: getRem(3);
+
+        & > span:first-child {
+          font-weight: 500;
+          font-size: getRem(16);
+        }
+
+        & > span:nth-child(2) {
+          font-weight: 500;
+          font-size: getRem(10);
+          color: $disabled;
+        }
+      }
+    }
+
+    &-my-trips {
+      display: flex;
+      flex-direction: column;
+      row-gap: getRem(10);
+
+      &-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & > span {
+          font-size: getRem(10);
+          color: $disabled;
+          font-weight: 500;
+
+          &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  &-main-content {
+    background-color: $backgroundColorLight;
+    width: getRem(600);
+    border-radius: getRem(20);
+    min-height: calc(100vh - getRem($basePaddingHorizontalMd));
+    padding: getRem(20);
+    height: max-content;
+
+    &-explore-message {
+      font-size: getRem(12);
+      color: $disabled;
+    }
+
+    &-top-destinations-container {
+      margin-top: getRem(30);
+    }
+  }
+
+  &-my-trips {
+    &-map {
+      margin-top: getRem(30);
+      width: 100%;
+      height: getRem(300);
+    }
+
+    &-carousel {
+      &-item {
+        height: getRem(200) !important;
+
+        &-dates {
+          display: flex;
+          align-items: center;
+          font-size: getRem(9);
+          column-gap: getRem(4);
+          color: $disabled;
+          font-weight: 500;
+        }
+
+        &-button {
+
+          & button {
+            width: getRem(120);
+          }
+
+          margin: 0 auto !important;
+        }
+      }
+    }
+
+    &-expenses-chart {
+      margin-top: getRem(30);
+      height: getRem(300);
+
+      & > canvas {
+        height: getRem(300);
+        margin: 0 auto;
+      }
+    }
+  }
+
+  &-trip-detail{
+    display: flex;
+    flex-direction: column;
+    row-gap: getRem(30);
+
+    &-trip-attraction-popup{
+      width: getRem(400);
+      display: flex;
+      flex-direction: column;
+      row-gap: getRem(20);
+
+      &-title {
+        margin: 0 auto;
+      }
+
+      &-amount-and-currency {
+        display: flex;
+        column-gap: getRem(20);
+        align-items: flex-end;
+      }
+    }
+
+    & > img{
+      width: 100%;
+      margin: 0 auto;
+      box-shadow: getRem(5) getRem(5) getRem(20) $boxShadow;
+    }
+
+    &-budget{
+      display: flex;
+      column-gap: getRem(10);
+      align-items: center;
+    }
+
+    &-header{
+      display: flex;
+      align-items: center;
+      column-gap: getRem(20);
+
+      & > img{
+        width: getRem(20);
+        height: getRem(20);
+
+        &:hover{
+          cursor: pointer;
+        }
+      }
+    }
+
+    &-dates{
+      width: getRem(170);
+
+      .dp__input_wrap {
+        width: getRem(170) !important;
+      }
+
+
+      &-input {
+        width: getRem(120) !important;
+      }
+    }
+  }
+
+  &-settings{
+    display: flex;
+    flex-direction: column;
+    row-gap: getRem(20);
+    margin: 0 auto;
+    width: getRem(400);
+
+    &-button{
+      margin: 0 auto;
+    }
+  }
+}

@@ -94,6 +94,10 @@ export default defineComponent({
     onClose: Function,
     setAlertMessage: Function,
     openSignInPopup: Function,
+    stayOnPage: {
+      type: Boolean,
+      required: false,
+    },
   },
   data: () => ({
     GmailIcon,
@@ -134,7 +138,9 @@ export default defineComponent({
         this.showErrorAlert(signInError);
         return;
       }
-      await router.push("/profile");
+      if (!this.stayOnPage) {
+        await router.push("/profile");
+      }
     },
     async googleSignIn() {
       this.setSubmitDisabled(true);
@@ -147,7 +153,9 @@ export default defineComponent({
         }, 2000);
         return;
       }
-      await router.push("/profile");
+      if (!this.stayOnPage) {
+        await router.push("/profile");
+      }
     },
   },
 });

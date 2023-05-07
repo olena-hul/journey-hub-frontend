@@ -1,7 +1,7 @@
 <template>
   <label class="inputs-checkbox-label">
     <input type="checkbox" :checked="checked" />
-    <span class="checkmark">Remember me</span>
+    <span class="checkmark">{{ labelText }}</span>
   </label>
 </template>
 
@@ -12,6 +12,7 @@ export default {
   name: "checkbox-input",
   props: {
     checked: Boolean,
+    labelText: String,
   },
 };
 </script>

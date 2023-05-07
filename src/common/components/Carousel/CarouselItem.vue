@@ -2,7 +2,7 @@
   <div
     :class="`carousel-container-item ${className}`"
     :style="{
-      transform: 'translateX(' + -100 * store.carouselCurrentSlide + '%)',
+      transform: 'translateX(' + -100 * store.currentSlides[identifier] + '%)',
     }"
   >
     <slot />
@@ -19,6 +19,7 @@ export default {
     store,
   }),
   props: {
+    identifier: String,
     className: String,
   },
 };
