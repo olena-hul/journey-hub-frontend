@@ -2,9 +2,16 @@ import { defineStore } from "pinia";
 import type { Attraction, Budget, Trip } from "@/pages/Planning/api";
 import { createTripAttractions, getMyTrips } from "@/pages/Planning/api";
 import type { Destination } from "@/pages/Home/api";
-import type { TripAttraction, TripDetail } from "@/pages/Profile/api";
+import type {
+  Excursion,
+  ExcursionBooking,
+  TripAttraction,
+  TripDetail,
+} from "@/pages/Profile/api";
 import {
   getDaysInTrip,
+  getExcursionBookings,
+  getExcursions,
   getTripDetail,
   getTripExpenses,
   getVisitedPlaces,
@@ -23,6 +30,8 @@ interface TripsState {
   selectedDates: Date[];
   estimatedExpenses: number[];
   actualExpenses: number[];
+  excursionBookings: ExcursionBooking[];
+  excursions: Excursion[];
 }
 
 export const useTripsStore = defineStore({
@@ -38,6 +47,8 @@ export const useTripsStore = defineStore({
       selectedDates: [],
       estimatedExpenses: [],
       actualExpenses: [],
+      excursionBookings: [],
+      excursions: [],
     } as TripsState),
 
   actions: {
@@ -99,6 +110,14 @@ export const useTripsStore = defineStore({
         ...newAttraction,
         attraction: attraction,
       };
+    },
+    async getExcursionBookings(user_id: number) {
+      const bookings = await getExcursionBookings(user_id);
+      this.excursionBookings = bookings.data;
+    },
+    async getExcursions() {
+      const excursions = await getExcursions();
+      this.excursions = excursions.data;
     },
     async setBudget(budget: any) {
       if (!this.trip) {

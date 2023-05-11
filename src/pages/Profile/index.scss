@@ -203,12 +203,12 @@
     }
   }
 
-  &-trip-detail{
+  &-trip-detail {
     display: flex;
     flex-direction: column;
     row-gap: getRem(30);
 
-    &-trip-attraction-popup{
+    &-trip-attraction-popup {
       width: getRem(400);
       display: flex;
       flex-direction: column;
@@ -225,34 +225,34 @@
       }
     }
 
-    & > img{
+    & > img {
       width: 100%;
       margin: 0 auto;
       box-shadow: getRem(5) getRem(5) getRem(20) $boxShadow;
     }
 
-    &-budget{
+    &-budget {
       display: flex;
       column-gap: getRem(10);
       align-items: center;
     }
 
-    &-header{
+    &-header {
       display: flex;
       align-items: center;
       column-gap: getRem(20);
 
-      & > img{
+      & > img {
         width: getRem(20);
         height: getRem(20);
 
-        &:hover{
+        &:hover {
           cursor: pointer;
         }
       }
     }
 
-    &-dates{
+    &-dates {
       width: getRem(170);
 
       .dp__input_wrap {
@@ -266,15 +266,65 @@
     }
   }
 
-  &-settings{
+  &-settings {
     display: flex;
     flex-direction: column;
     row-gap: getRem(20);
     margin: 0 auto;
     width: getRem(400);
 
-    &-button{
+    &-button {
       margin: 0 auto;
     }
+  }
+
+  &-excursions {
+    &-cards-container {
+      display: flex;
+      flex-direction: column;
+      row-gap: getRem(20);
+      margin-top: getRem(20);
+    }
+
+    &-card {
+      width: 100%;
+      height: getRem(200);
+      border-radius: getRem(10);
+      box-shadow: getRem(4) getRem(4) getRem(20) $boxShadow;
+      background-color: $contentText;
+      padding: getRem(20);
+      display: flex;
+
+      &-left {
+        display: flex;
+        flex-direction: column;
+        row-gap: getRem(10);
+
+        &-header {
+          display: flex;
+          column-gap: getRem(20);
+        }
+
+        &-description {
+          color: $disabled;
+          font-size: getRem(13);
+          width: getRem(400);
+        }
+      }
+
+      &-right {
+        display: flex;
+        flex-direction: column;
+        row-gap: getRem(10);
+        align-items: center;
+
+        & > img {
+          width: getRem(100);
+          height: getRem(100);
+          border-radius: getRem(10)
+        }
+      }
+    }
+
   }
 }
