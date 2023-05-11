@@ -66,6 +66,13 @@ export interface ExcursionBooking {
   session_url: string;
 }
 
+export interface ExcursionBookingInput {
+  phone_number: string;
+  excursion: number;
+  adults_count: number;
+  children_count: number;
+}
+
 export async function getVisitedPlaces(): Promise<APIResponse<Destination[]>> {
   return await http.get(`${TRIPS_URL}visited-places/`, {});
 }
@@ -100,4 +107,10 @@ export async function getExcursionBookings(
 
 export async function getExcursions(): Promise<APIResponse<Excursion[]>> {
   return await http.get(`${EXCURSIONS_URL}/`, {});
+}
+
+export async function createBooking(
+  body: ExcursionBookingInput
+): Promise<APIResponse<ExcursionBooking>> {
+  return await http.post(`${EXCURSION_BOOKINGS_URL}/`, { body });
 }

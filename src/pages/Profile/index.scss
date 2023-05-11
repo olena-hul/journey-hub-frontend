@@ -279,6 +279,32 @@
   }
 
   &-excursions {
+    &-book-popup {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      row-gap: getRem(20);
+    }
+
+    &-book-button-container {
+      margin: getRem(20) 43%;
+    }
+
+    &-images-container {
+      display: flex;
+      column-gap: getRem(20);
+    }
+
+    &-detail-image {
+      height: getRem(200);
+      width: getRem(170);
+    }
+
+    &-card-image {
+      margin-left: auto;
+    }
+
     &-cards-container {
       display: flex;
       flex-direction: column;

@@ -4,19 +4,29 @@ import Customer3 from "@/assets/images/Customer3.png";
 import { formatDateDDMM } from "@/pages/Planning/utils";
 import Calendar from "@/assets/images/CalendarGrey.svg";
 import PrimaryButton from "@/common/components/Buttons/PrimaryButton.vue";
+import { useTripsStore } from "@/pages/Profile/store/trips";
+import type { Excursion } from "@/pages/Profile/api";
 
 export default defineComponent({
   name: "ExcursionCard",
   components: { PrimaryButton },
-  methods: { formatDateDDMM },
   props: {
     excursion: Object,
+    onViewClick: Function,
   },
   data() {
     return {
       Customer3,
       Calendar,
+      tripsStore: useTripsStore(),
     };
+  },
+  methods: {
+    formatDateDDMM,
+    onExcursionClick() {
+      this.tripsStore.excursion = this.excursion as Excursion;
+      this.onViewClick && this.onViewClick();
+    },
   },
 });
 </script>
@@ -49,7 +59,7 @@ export default defineComponent({
         :src="excursion.excursion_attractions.at(0).attraction.image_urls.at(0)"
         alt="Excursion image"
       />
-      <PrimaryButton>View more</PrimaryButton>
+      <PrimaryButton @click="onExcursionClick">View more</PrimaryButton>
     </div>
   </div>
 </template>

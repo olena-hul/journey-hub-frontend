@@ -12,6 +12,9 @@ export default defineComponent({
       tripsStore: useTripsStore(),
     };
   },
+  props: {
+    onViewClick: Function,
+  },
 });
 </script>
 
@@ -21,6 +24,7 @@ export default defineComponent({
   <h4>Explore new</h4>
   <div class="profile-excursions-cards-container">
     <ExcursionCard
+      :on-view-click="onViewClick"
       :key="excursion.id"
       v-for="excursion in tripsStore.excursions"
       :excursion="excursion"

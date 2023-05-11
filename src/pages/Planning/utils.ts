@@ -98,3 +98,15 @@ export const planTrip = (selectedDates: Date[], plannedTrip: MyObject) => {
   }
   return sortedTrip;
 };
+
+export const formatDateWithHours = (dateString: string) => {
+  const date = new Date(dateString);
+  const options = {
+    day: "2-digit",
+    month: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+
+  return date.toLocaleString("en-GB", options as Intl.DateTimeFormatOptions);
+};

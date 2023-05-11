@@ -60,10 +60,6 @@ export default defineComponent({
   },
   methods: {
     formatDateDDMM,
-    onClick(trip_id: number) {
-      this.tripsStore.getTripDetail(trip_id);
-      this.onViewClick && this.onViewClick();
-    },
   },
 });
 </script>

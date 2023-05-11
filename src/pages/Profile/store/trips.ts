@@ -5,10 +5,12 @@ import type { Destination } from "@/pages/Home/api";
 import type {
   Excursion,
   ExcursionBooking,
+  ExcursionBookingInput,
   TripAttraction,
   TripDetail,
 } from "@/pages/Profile/api";
 import {
+  createBooking,
   getDaysInTrip,
   getExcursionBookings,
   getExcursions,
@@ -32,6 +34,8 @@ interface TripsState {
   actualExpenses: number[];
   excursionBookings: ExcursionBooking[];
   excursions: Excursion[];
+  excursion: Excursion | null;
+  booking: ExcursionBooking | null;
 }
 
 export const useTripsStore = defineStore({
@@ -49,6 +53,8 @@ export const useTripsStore = defineStore({
       actualExpenses: [],
       excursionBookings: [],
       excursions: [],
+      excursion: null,
+      booking: null,
     } as TripsState),
 
   actions: {
@@ -114,6 +120,11 @@ export const useTripsStore = defineStore({
     async getExcursionBookings(user_id: number) {
       const bookings = await getExcursionBookings(user_id);
       this.excursionBookings = bookings.data;
+    },
+    async createBooking(body: ExcursionBookingInput) {
+      const booking = await createBooking(body);
+      this.booking = booking.data;
+      return this.booking;
     },
     async getExcursions() {
       const excursions = await getExcursions();

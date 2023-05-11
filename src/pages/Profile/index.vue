@@ -31,7 +31,14 @@
         :on-back-click="() => (tripDetail = false)"
       />
       <ProfileSettings v-if="activeTab === 'Settings'" />
-      <MyExcursions v-if="activeTab === 'Excursions'" />
+      <MyExcursions
+        v-if="activeTab === 'Excursions' && !excursionDetail"
+        :on-view-click="onViewExcursionClick"
+      />
+      <ExcursionDetail
+        v-if="activeTab === 'Excursions' && excursionDetail"
+        :on-back-click="() => (excursionDetail = false)"
+      />
     </div>
     <div class="profile-right-aside">
       <div class="profile-right-aside-profile">
@@ -78,10 +85,12 @@ import TripDetail from "@/pages/Profile/sections/MyTrips/TripDetail.vue";
 import ProfileSettings from "@/pages/Profile/sections/Settings/Settings.vue";
 import { useTripsStore } from "@/pages/Profile/store/trips";
 import MyExcursions from "@/pages/Profile/sections/Excursions/index.vue";
+import ExcursionDetail from "@/pages/Profile/sections/Excursions/components/ExcursionDetail.vue";
 
 export default defineComponent({
   name: "user-profile",
   components: {
+    ExcursionDetail,
     MyExcursions,
     ProfileSettings,
     TripDetail,
@@ -97,6 +106,7 @@ export default defineComponent({
     activeTab: "Homepage",
     Customer3,
     tripDetail: false,
+    excursionDetail: false,
     tripsStore: useTripsStore(),
     authStore: useAuthStore(),
   }),
@@ -106,6 +116,9 @@ export default defineComponent({
     },
     onViewClick() {
       this.tripDetail = true;
+    },
+    onViewExcursionClick() {
+      this.excursionDetail = true;
     },
   },
   computed: {
