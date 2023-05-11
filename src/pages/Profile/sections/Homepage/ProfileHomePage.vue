@@ -13,7 +13,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import TopPlacesCarousel from "@/pages/Planning/components/Carousel.vue";
-import TopDestinationsCarousel from "@/pages/Profile/components/TopDestinationsCarousel.vue";
+import TopDestinationsCarousel from "@/pages/Profile/sections/Homepage/TopDestinationsCarousel.vue";
 import DestinationForm from "@/pages/Home/components/DestinationForm.vue";
 
 export default defineComponent({

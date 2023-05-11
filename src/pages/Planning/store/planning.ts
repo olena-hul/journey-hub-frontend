@@ -18,7 +18,7 @@ import {
   suggestTrip,
   updateBudget,
 } from "@/pages/Planning/api";
-import { addDays, convertCurrency } from "@/pages/Planning/utils";
+import { convertCurrency, planTrip } from "@/pages/Planning/utils";
 import { BUDGET_CATEGORIES } from "@/common/constants";
 import type { MyObject } from "@/common/interfaces";
 
@@ -42,7 +42,7 @@ export const usePlanningStore = defineStore({
         id: null,
         amount: 0,
         currency: "$",
-        trip: 0,
+        trip: null as unknown,
         entries: [],
       },
       trip: null,
@@ -102,14 +102,14 @@ export const usePlanningStore = defineStore({
       await suggestTrip(body);
     },
     async createTripAttractions() {
-      if (!this.trip || !this.trip.destination) {
+      if (!this.trip || this.trip?.id === null) {
         return;
       }
       const tripAttractions: TripAttractionInput[] = [];
       Object.entries(this.plannedTrip).forEach(([date, attractions]) => {
         (attractions as Attraction[]).map((attraction) => {
           tripAttractions.push({
-            destination: this.trip?.destination || 0,
+            trip: this.trip?.id as number,
             attraction: attraction.id,
             date: date,
             price:
@@ -126,37 +126,7 @@ export const usePlanningStore = defineStore({
       await createTripAttractions(tripAttractions);
     },
     getPlannedTrip(selectedDates: Date[]) {
-      const [startDate, endDate] = selectedDates;
-
-      for (const dateStr in this.plannedTrip) {
-        const date = new Date(dateStr);
-
-        // determine whether date is inside start-end range
-        if (date >= selectedDates[0] && date <= selectedDates[1]) {
-          // date is already in range, do nothing
-        } else {
-          // date is not in range, delete it
-          delete this.plannedTrip[dateStr as string];
-        }
-      }
-      // add new dates from start-end range if they are not present in plannedTrip
-      for (
-        let d: Date = startDate;
-        d.getTime() <= endDate.getTime();
-        d = addDays(d, 2)
-      ) {
-        const dateStr: any = d.toISOString().substring(0, 10);
-        if (!(dateStr in this.plannedTrip)) {
-          this.plannedTrip[dateStr] = [];
-        }
-      }
-      // sort dates in ascending order
-      const sortedDates = Object.keys(this.plannedTrip).sort();
-      const sortedTrip: MyObject = {};
-      for (const dateStr of sortedDates) {
-        sortedTrip[dateStr] = this.plannedTrip[dateStr as any];
-      }
-      this.plannedTrip = sortedTrip;
+      this.plannedTrip = planTrip(selectedDates, this.plannedTrip);
     },
     calculateExpenses() {
       if (this.budget === null || !this.plannedTrip) {

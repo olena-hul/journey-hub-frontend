@@ -1,5 +1,6 @@
 import type { Attraction } from "@/pages/Planning/api";
 import { usePlanningStore } from "@/pages/Planning/store/planning";
+import type { Destination } from "@/pages/Home/api";
 
 export const useMap = () => {
   let map: google.maps.Map | null = null;
@@ -8,13 +9,14 @@ export const useMap = () => {
   const initMap = (
     latitude: number,
     longitude: number,
-    mapId: string | null = null
+    mapId: string | null = null,
+    zoom = 12
   ): google.maps.Map => {
     map = new google.maps.Map(
       document.getElementById(mapId || "map") as HTMLElement,
       {
         center: { lat: latitude, lng: longitude },
-        zoom: 12,
+        zoom,
       }
     );
     return map;
@@ -85,9 +87,22 @@ export const useMap = () => {
       return marker;
     });
   };
+  const addVisitedPlacesMarkers = (destinations: Destination[]) => {
+    return destinations.map((destination) => {
+      return new google.maps.Marker({
+        position: {
+          lat: destination.location.latitude,
+          lng: destination.location.longitude,
+        },
+        map,
+        title: destination.name,
+      });
+    });
+  };
   return {
     map,
     initMap,
     addMarkers,
+    addVisitedPlacesMarkers,
   };
 };

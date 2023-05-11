@@ -1,4 +1,6 @@
 import { LOCALSTORAGE_KEYS } from "@/common/constants";
+import type { TripAttraction } from "@/pages/Profile/api";
+import type { MyObject } from "@/common/interfaces";
 
 export const isAuthenticated = () => {
   const value = localStorage.getItem(LOCALSTORAGE_KEYS.isAuthenticated);
@@ -14,6 +16,17 @@ export const formatDate = (date: Date) => {
 export const groupActivities = (suggestedTrip: Array<any> | null) => {
   return suggestedTrip?.reduce((acc, obj) => {
     const key = obj.day;
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(obj);
+    return acc;
+  }, {});
+};
+
+export const groupTripAttractions = (tripAttractions: TripAttraction[]) => {
+  return tripAttractions?.reduce((acc: MyObject, obj) => {
+    const key = obj.date.slice(0, 10);
     if (!acc[key]) {
       acc[key] = [];
     }

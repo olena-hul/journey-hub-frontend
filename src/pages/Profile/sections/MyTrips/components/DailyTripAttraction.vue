@@ -10,8 +10,8 @@
     </div>
 
     <div
-      :key="activity.day"
-      v-for="activity in activities"
+      :key="tripAttraction.date"
+      v-for="tripAttraction in tripAttractions"
       class="planning-daily-activity-card"
     >
       <img
@@ -21,37 +21,46 @@
       />
       <div class="planning-daily-activity-card-center">
         <div class="planning-daily-activity-card-center-header">
-          <h6>{{ activity.name }}</h6>
+          <h6>{{ tripAttraction.attraction.name }}</h6>
+          <img
+            alt="Pencil"
+            :src="Pencil"
+            class="planning-heading-date-form-pencil-icon"
+            @click="editTripAttractionPopupOpen = true"
+          />
         </div>
         <div class="planning-daily-activity-card-center-details">
           <img :src="Clock" alt="clock icon" />
-          <span> {{ activity.duration }} hours </span>
+          <span> {{ tripAttraction.attraction.duration }} hours </span>
           <img :src="Price" alt="price icon" />
           <span>
             {{
-              activity.currency === this.planningStore.budget?.currency
-                ? activity.price
+              tripAttraction.currency ===
+              this.tripsStore.trip?.budgets.at(0)?.currency
+                ? tripAttraction.price
                 : convertCurrency(
-                    this.planningStore.budget?.currency || "$",
-                    activity.price
+                    this.tripsStore.trip?.budgets.at(0)?.currency || "$",
+                    tripAttraction.price
                   )
             }}
             {{
-              activity.currency || this.planningStore.budget?.currency || "$"
+              tripAttraction.currency ||
+              this.tripsStore.trip?.budgets.at(0)?.currency ||
+              "$"
             }}</span
           >
         </div>
         <span>
-          {{ activity.description }}
+          {{ tripAttraction.attraction.description }}
         </span>
       </div>
       <img
-        :src="activity.image_urls?.at(0) || Lovre"
+        :src="tripAttraction.attraction.image_urls?.at(0) || Lovre"
         alt="Attraction image"
         class="planning-daily-activity-card-attraction-image"
       />
       <img
-        @click="() => onAttractionRemove(activity)"
+        @click="() => onAttractionRemove(tripAttraction)"
         :src="RemoveIcon"
         class="planning-daily-activity-remove"
         alt="Remove icon"
@@ -71,6 +80,10 @@
   <span @click="onAddNewPlaceClick" class="planning-daily-activity-add-place">
     + Add a place</span
   >
+  <edit-trip-attraction-popup
+    :is-open="editTripAttractionPopupOpen"
+    :on-close="() => (editTripAttractionPopupOpen = false)"
+  />
 </template>
 
 <script lang="ts">
@@ -81,15 +94,22 @@ import Clock from "@/assets/images/clock.png";
 import Price from "@/assets/images/price-tag.png";
 import Lovre from "@/assets/images/Lovre.png";
 import RemoveIcon from "@/assets/images/cross.png";
-import { convertCurrency, formatDateToBackendFormat } from "../utils";
+import {
+  convertCurrency,
+  formatDateToBackendFormat,
+} from "@/pages/Planning/utils";
 import { usePlanningStore } from "@/pages/Planning/store/planning";
 import AddPlace from "@/pages/Planning/components/AddPlaceComponent.vue";
 import type { Attraction } from "@/pages/Planning/api";
 import Pencil from "@/assets/images/pencil.png";
+import EditTripAttractionPopup from "@/pages/Profile/components/EditTripAttractionPopup.vue";
+import { useTripsStore } from "@/pages/Profile/store/trips";
+import type { TripAttraction } from "@/pages/Profile/api";
+import { removeTripAttraction } from "@/pages/Profile/api";
 
 export default defineComponent({
-  name: "DailyActivities",
-  components: { AddPlace },
+  name: "daily-trip-attraction",
+  components: { EditTripAttractionPopup, AddPlace },
   methods: {
     convertCurrency,
     formatDateToBackendFormat,
@@ -101,29 +121,45 @@ export default defineComponent({
       this.planningStore.newPlaceVisible = true;
       this.planningStore.selectedDay = formatDateToBackendFormat(this.day);
     },
-    onAttractionSelect(attraction: Attraction) {
+    async onAttractionSelect(attraction: Attraction) {
       if (!this.day) {
         return;
       }
       const formattedDate = formatDateToBackendFormat(this.day);
-      this.planningStore.plannedTrip[formattedDate].push(attraction);
+      const createdAttraction = await this.tripsStore.createTripAttraction(
+        formattedDate,
+        attraction
+      );
+      this.tripsStore.plannedTrip[formattedDate].push(createdAttraction);
       this.planningStore.newPlaceVisible = false;
-      this.planningStore.calculateExpenses();
+      this.tripsStore.calculateExpenses();
     },
-    onAttractionRemove(attraction: Attraction) {
+    onAttractionRemove(attraction: TripAttraction) {
       if (!this.day) {
         return;
       }
       const formattedDate = formatDateToBackendFormat(this.day);
-      this.planningStore.plannedTrip[formattedDate].pop(attraction);
-      this.planningStore.calculateExpenses();
+
+      this.tripsStore.plannedTrip[formattedDate] = this.tripsStore.plannedTrip[
+        formattedDate
+      ].filter(function (item: TripAttraction) {
+        return item.id !== attraction.id;
+      });
+      removeTripAttraction(attraction.id);
+      this.tripsStore.calculateExpenses();
     },
   },
+  computed: {
+    trip() {
+      return this.tripsStore.trip;
+    },
+  },
+
   props: {
     dayNumber: Number,
     day: Date,
     attractionData: Object,
-    activities: Array,
+    tripAttractions: Array,
     placeholder: {
       required: false,
       type: String,
@@ -137,6 +173,8 @@ export default defineComponent({
     RemoveIcon,
     Pencil,
     planningStore: usePlanningStore(),
+    editTripAttractionPopupOpen: false,
+    tripsStore: useTripsStore(),
   }),
 });
 </script>

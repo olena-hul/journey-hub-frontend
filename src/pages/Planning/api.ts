@@ -19,6 +19,7 @@ export interface BudgetEntryInput {
 export interface BudgetEntry extends BudgetEntryInput {
   id: number | null;
 }
+
 export interface BudgetInput {
   amount: number;
   currency: string;
@@ -34,7 +35,7 @@ export interface Budget extends BudgetInput {
 export interface TripInput {
   start_date: string;
   end_date: string;
-  destination: number;
+  destination: any;
   user: number;
 }
 
@@ -49,6 +50,17 @@ export interface SuggestTripInput {
   end_date: string;
   budget: number;
   currency: string;
+}
+
+export interface CustomImage {
+  user: number;
+  image_url: string;
+}
+
+export interface Rate {
+  value: number;
+  user: number;
+  feedback: string;
 }
 
 export interface Attraction {
@@ -67,11 +79,13 @@ export interface Attraction {
   budget_category: string;
   destination: number;
   currency: string | null;
+  custom_images: CustomImage[];
+  rates: Rate[];
 }
 
 export interface TripAttractionInput {
-  destination: number;
-  attraction: number;
+  trip: number;
+  attraction: any;
   date: string;
   price: number;
   currency: string;
@@ -87,6 +101,14 @@ export async function getTrip(
       start_date,
       end_date,
       destination_id,
+    },
+  });
+}
+
+export async function getMyTrips(): Promise<APIResponse<Trip[]>> {
+  return await http.get(TRIPS_URL, {
+    params: {
+      mine: true,
     },
   });
 }

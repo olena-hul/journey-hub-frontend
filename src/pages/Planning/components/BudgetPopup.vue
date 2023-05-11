@@ -94,19 +94,23 @@ import PrimaryButton from "@/common/components/Buttons/PrimaryButton.vue";
 import RemoveIcon from "@/assets/images/cross.png";
 import { usePlanningStore } from "@/pages/Planning/store/planning";
 import { useAuthStore } from "@/pages/Home/store/auth";
+import { useTripsStore } from "@/pages/Profile/store/trips";
 
 export default {
   name: "BudgetPopup",
+  props: {
+    isOpen: Boolean,
+    onClose: Function,
+    initialBudget: Object,
+    trip_id: Number,
+  },
   data() {
     return {
       RemoveIcon,
       planningStore: usePlanningStore(),
       authStore: useAuthStore(),
-      budget: {
-        amount: 0,
-        currency: "$",
-        entries: [],
-      },
+      budget: this.initialBudget,
+      tripsStore: useTripsStore(),
     };
   },
   methods: {
@@ -120,18 +124,19 @@ export default {
       });
     },
     save() {
-      if (this.authStore.currentUser && this.planningStore.trip) {
-        if (this.planningStore.budget?.id) {
-          this.planningStore.updateBudget(this.planningStore.budget.id, {
+      if (this.authStore.currentUser && this.trip_id) {
+        if (this.budget?.id) {
+          this.planningStore.updateBudget(this.budget.id, {
             ...this.budget,
-            trip: this.planningStore.trip.id,
+            trip: this.trip_id,
           });
         } else {
           this.planningStore.createBudget({
             ...this.budget,
-            trip: this.planningStore.trip.id,
+            trip: this.trip_id,
           });
         }
+        this.tripsStore.setBudget(this.budget);
       } else {
         this.planningStore.setBudget(this.budget);
       }
@@ -149,17 +154,25 @@ export default {
     },
   },
   components: { PrimaryButton, SelectInput, TextInput, OverlayPopup },
-  props: {
-    isOpen: Boolean,
-    onClose: Function,
-  },
   computed: {
     planningBudget() {
       return this.planningStore.budget;
     },
+    tripBudget() {
+      return this.tripsStore.trip?.budgets.at(0);
+    },
   },
   watch: {
     planningBudget(newValue) {
+      if (newValue) {
+        this.budget = {
+          amount: newValue.amount,
+          currency: newValue.currency,
+          entries: newValue.entries,
+        };
+      }
+    },
+    tripBudget(newValue) {
       if (newValue) {
         this.budget = {
           amount: newValue.amount,

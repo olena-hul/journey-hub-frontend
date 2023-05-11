@@ -50,9 +50,13 @@
       <div class="profile-right-aside-my-trips" v-if="activeTab === 'Homepage'">
         <div class="profile-right-aside-my-trips-header">
           <h4>My trips</h4>
-          <span> more ...</span>
+          <span @click="activeTab = 'My trips'"> more ...</span>
         </div>
-        <MyTripCardSmall :key="i" v-for="i in 3" />
+        <MyTripCardSmall
+          :key="myTrip.id"
+          v-for="myTrip in this.tripsStore.myTrips"
+          :trip="myTrip"
+        />
       </div>
     </div>
   </div>
@@ -63,19 +67,15 @@ import PrimaryButton from "@/common/components/Buttons/PrimaryButton.vue";
 import { defineComponent } from "vue";
 import { useAuthStore } from "@/pages/Home/store/auth";
 import "./index.scss";
-import DatePicker from "@/common/components/DatePicker/index.vue";
 import Customer3 from "@/assets/images/Customer3.png";
-import MyTripCardSmall from "@/pages/Profile/components/MyTripCardSmall.vue";
-import DestinationForm from "@/pages/Home/components/DestinationForm.vue";
+import MyTripCardSmall from "@/pages/Profile/sections/MyTrips/MyTripCardSmall.vue";
 import HomePageCalendar from "@/pages/Profile/components/HomePageCalendar.vue";
-import TopPlacesCarousel from "@/pages/Planning/components/Carousel.vue";
 import { usePlanningStore } from "@/pages/Planning/store/planning";
-import TopDestinationsCarousel from "@/pages/Profile/components/TopDestinationsCarousel.vue";
-import HomePage from "@/pages/Home/index.vue";
-import ProfileHomepage from "@/pages/Profile/components/ProfileHomePage.vue";
-import MyTrips from "@/pages/Profile/components/MyTrips.vue";
-import TripDetail from "@/pages/Profile/components/TripDetail.vue";
-import ProfileSettings from "@/pages/Profile/components/Settings.vue";
+import ProfileHomepage from "@/pages/Profile/sections/Homepage/ProfileHomePage.vue";
+import MyTrips from "@/pages/Profile/sections/MyTrips/MyTrips.vue";
+import TripDetail from "@/pages/Profile/sections/MyTrips/TripDetail.vue";
+import ProfileSettings from "@/pages/Profile/sections/Settings/Settings.vue";
+import { useTripsStore } from "@/pages/Profile/store/trips";
 
 export default defineComponent({
   name: "user-profile",
@@ -94,6 +94,8 @@ export default defineComponent({
     activeTab: "Homepage",
     Customer3,
     tripDetail: false,
+    tripsStore: useTripsStore(),
+    authStore: useAuthStore(),
   }),
   methods: {
     signOut() {
@@ -103,12 +105,29 @@ export default defineComponent({
       this.tripDetail = true;
     },
   },
+  computed: {
+    user() {
+      return this.authStore.user;
+    },
+  },
   mounted() {
     this.planningStore.getAttractions(null);
     const anchor = this.$route.hash;
     if (anchor) {
       this.activeTab = anchor.slice(1);
     }
+  },
+  watch: {
+    async user(newValue) {
+      if (newValue) {
+        await Promise.all([
+          this.tripsStore.getMyTrips(),
+          this.tripsStore.getVisitedPlaces(),
+          this.tripsStore.getDaysInTrips(),
+          this.tripsStore.getTripExpenses(),
+        ]);
+      }
+    },
   },
 });
 </script>

@@ -1,11 +1,14 @@
 <template>
   <div class="profile-my-trip-card-small">
-    <img :src="Paris" alt="Trip image" />
+    <img :src="trip.destination.image_urls?.at(0) || Paris" alt="Trip image" />
     <div class="profile-my-trip-card-small-content">
-      <span> Trip to Paris</span>
+      <span> Trip to {{ trip.destination.name }}</span>
       <div>
         <img :src="Calendar" alt="calendar icon" />
-        <span>Mar 22 - May 23</span>
+        <span
+          >{{ formatDateDDMM(trip.start_date) }} -
+          {{ formatDateDDMM(trip.end_date) }}</span
+        >
       </div>
     </div>
   </div>
@@ -15,6 +18,7 @@
 import { defineComponent } from "vue";
 import Paris from "@/assets/images/Paris.png";
 import Calendar from "@/assets/images/CalendarGrey.svg";
+import { formatDate, formatDateDDMM } from "@/pages/Planning/utils";
 
 export default defineComponent({
   name: "my-trip-card-small",
@@ -22,7 +26,10 @@ export default defineComponent({
     Paris,
     Calendar,
   }),
-  methods: {},
+  props: {
+    trip: Object,
+  },
+  methods: { formatDateDDMM, formatDate },
 });
 </script>
 

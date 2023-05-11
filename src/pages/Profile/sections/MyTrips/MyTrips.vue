@@ -2,9 +2,10 @@
 import { defineComponent } from "vue";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useMap } from "@/pages/Planning/map";
-import MyTripsCarousel from "@/pages/Profile/components/MyTripsCarousel.vue";
-import TripDaysChart from "@/pages/Profile/components/TripDaysChart.vue";
-import TotalExpensesChart from "@/pages/Profile/components/TotalExpensesChart.vue";
+import MyTripsCarousel from "@/pages/Profile/sections/MyTrips/MyTripsCarousel.vue";
+import TripDaysChart from "@/pages/Profile/sections/MyTrips/TripDaysChart.vue";
+import TotalExpensesChart from "@/pages/Profile/sections/MyTrips/TotalExpensesChart.vue";
+import { useTripsStore } from "@/pages/Profile/store/trips";
 
 export default defineComponent({
   name: "MyTrips",
@@ -13,10 +14,16 @@ export default defineComponent({
     return {
       map: Object,
       mapHook: useMap(),
+      tripsStore: useTripsStore(),
     };
   },
   props: {
     onViewClick: Function,
+  },
+  computed: {
+    visitedPlaces() {
+      return this.tripsStore.visitedPlaces;
+    },
   },
   mounted() {
     navigator.geolocation.getCurrentPosition((location) => {
@@ -29,10 +36,18 @@ export default defineComponent({
         this.map = this.mapHook.initMap(
           location.coords.latitude,
           location.coords.longitude,
-          "visited-places-map"
+          "visited-places-map",
+          5
         ) as any;
       });
     });
+  },
+  watch: {
+    visitedPlaces(newValue) {
+      if (newValue) {
+        this.mapHook.addVisitedPlacesMarkers(newValue);
+      }
+    },
   },
 });
 </script>
@@ -42,10 +57,12 @@ export default defineComponent({
   <div id="visited-places-map" class="profile-my-trips-map"></div>
   <MyTripsCarousel :on-view-click="onViewClick" />
   <h4>Your days in trips by month</h4>
-  <TripDaysChart :days-in-trips="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]" />
+  <TripDaysChart :days-in-trips="Object.values(this.tripsStore.daysInTrips)" />
   <div class="profile-my-trips-expenses-chart">
     <h4>Your total expenses in trips</h4>
-    <TotalExpensesChart :expenses="[1, 2, 3, 4, 5, 6]" />
+    <TotalExpensesChart
+      :expenses="Object.values(this.tripsStore.tripExpenses)"
+    />
   </div>
 </template>
 

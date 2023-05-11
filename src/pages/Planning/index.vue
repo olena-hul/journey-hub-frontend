@@ -75,11 +75,13 @@
         />
       </div>
       <div class="planning-footer">
-        <PrimaryButton class-name="button-inverted"> Cancel </PrimaryButton>
+        <PrimaryButton class-name="button-inverted"> Cancel</PrimaryButton>
         <PrimaryButton @click="onSaveClicked">Save trip</PrimaryButton>
       </div>
     </div>
     <budget-popup
+      :trip_id="(this.planningStore.trip?.id || null) as number"
+      :initial-budget="this.planningStore.budget"
       :is-open="isBudgetPopupOpen"
       :on-close="() => (isBudgetPopupOpen = false)"
     />
