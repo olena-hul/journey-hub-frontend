@@ -60,6 +60,7 @@ import type { SignInInput } from "@/pages/Home/api";
 import { defineComponent } from "vue";
 import { useAuthStore } from "@/pages/Home/store/auth";
 import router from "@/router";
+import { useTripsStore } from "@/pages/Profile/store/trips";
 
 export default defineComponent({
   name: "sign-in-form",
@@ -84,6 +85,7 @@ export default defineComponent({
       formData: { email: "", password: "" } as SignInInput,
       store: useAuthStore(),
       submitDisabled: false,
+      tripsStore: useTripsStore(),
     };
   },
 
@@ -123,6 +125,26 @@ export default defineComponent({
       if (!this.stayOnPage) {
         await router.push("/profile");
       }
+    },
+  },
+  computed: {
+    user() {
+      return this.store.user;
+    },
+  },
+  watch: {
+    async user(newValue) {
+      if (!newValue.id) {
+        return;
+      }
+      await Promise.all([
+        this.tripsStore.getMyTrips(),
+        this.tripsStore.getVisitedPlaces(),
+        this.tripsStore.getDaysInTrips(),
+        this.tripsStore.getTripExpenses(),
+        this.tripsStore.getExcursionBookings(newValue.id),
+        this.tripsStore.getExcursions(),
+      ]);
     },
   },
 });
