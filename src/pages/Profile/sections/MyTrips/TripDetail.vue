@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-trip-detail">
+  <div v-if="!attractionVisible" class="profile-trip-detail">
     <div class="profile-trip-detail-header">
       <img :src="BackIcon" alt="Back icon" @click="onBackClick" />
       <h3>Trip to {{ this.tripsStore.trip?.destination.name }}</h3>
@@ -29,6 +29,7 @@
     </div>
     <div v-if="getDaysBetweenDates()">
       <DailyTripAttraction
+        :on-attraction-click="() => (attractionVisible = true)"
         placeholder="Search a place"
         :day="parseDate(key)"
         :day-number="Number(index) + 1"
@@ -39,6 +40,20 @@
         )"
       />
     </div>
+    <h3>Other expenses</h3>
+    <CustomExpense
+      :key="expense.id"
+      :custom-expense="expense"
+      v-for="expense in tripsStore.trip?.custom_expenses"
+    />
+    <span
+      @click="tripsStore.customExpenseFormVisible = true"
+      class="planning-daily-activity-add-place"
+      v-if="!tripsStore.customExpenseFormVisible"
+    >
+      + Add an expense</span
+    >
+    <AddExpense v-if="tripsStore.customExpenseFormVisible" />
     <div class="planning-budget-chart">
       <h4>Expenses chart</h4>
       <BudgetChart
@@ -47,6 +62,10 @@
       />
     </div>
   </div>
+  <TripAttractionDetail
+    v-if="attractionVisible"
+    :on-back-click="() => (attractionVisible = false)"
+  />
 
   <budget-popup
     :trip_id="tripsStore.trip?.id as number"
@@ -70,10 +89,17 @@ import BudgetChart from "@/pages/Planning/components/BudgetChart.vue";
 import { useTripsStore } from "@/pages/Profile/store/trips";
 import type { TripDetail } from "@/pages/Profile/api";
 import DailyTripAttraction from "@/pages/Profile/sections/MyTrips/components/DailyTripAttraction.vue";
+import { useAuthStore } from "@/pages/Home/store/auth";
+import TripAttractionDetail from "@/pages/Profile/sections/MyTrips/TripAttractionDetail.vue";
+import CustomExpense from "@/pages/Profile/sections/MyTrips/components/CustomExpense.vue";
+import AddExpense from "@/pages/Profile/sections/MyTrips/components/AddExpense.vue";
 
 export default defineComponent({
   name: "TripDetail",
   components: {
+    AddExpense,
+    CustomExpense,
+    TripAttractionDetail,
     DailyTripAttraction,
     BudgetChart,
     BudgetPopup,
@@ -88,6 +114,8 @@ export default defineComponent({
       isBudgetPopupOpen: false,
       planningStore: usePlanningStore(),
       tripsStore: useTripsStore(),
+      authStore: useAuthStore(),
+      attractionVisible: false,
     };
   },
   props: {

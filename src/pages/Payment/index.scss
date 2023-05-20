@@ -1,0 +1,14 @@
+@import "@/styles/base";
+
+.payment {
+  display: flex;
+  flex-direction: column;
+  margin-top: getRem(20);
+  align-items: center;
+  row-gap: getRem(30);
+
+  & > img {
+    width: getRem(100);
+    height: getRem(100);
+  }
+}

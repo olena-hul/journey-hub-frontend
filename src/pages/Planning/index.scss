@@ -1,7 +1,7 @@
 @import "@/styles/base";
 
 .planning {
-  &-loader{
+  &-loader {
     display: flex;
     padding: getRem(100) getRem($basePaddingHorizontalSm) getRem($basePaddingHorizontalMd);
     height: 100vh;
@@ -321,6 +321,16 @@
       align-items: center;
       column-gap: getRem(20);
 
+      &:hover {
+        cursor: pointer;
+        box-shadow: getRem(5) getRem(5) getRem(20) $boxShadow;
+      }
+
+      &-visited {
+        @extend .planning-daily-activity-card;
+        background-color: $backgroundColor;
+      }
+
       &-icon {
         width: getRem(20);
         height: getRem(20);
@@ -333,7 +343,7 @@
         flex-direction: column;
         row-gap: getRem(5);
 
-        &-header{
+        &-header {
           display: flex;
           column-gap: getRem(10);
         }
@@ -342,6 +352,7 @@
           display: flex;
           column-gap: getRem(5);
           font-size: getRem(10);
+          align-items: center;
 
           & > img {
             width: getRem(10);

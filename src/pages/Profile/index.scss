@@ -279,12 +279,63 @@
   }
 
   &-excursions {
+    &-create-popup {
+      width: getRem(500);
+      display: flex;
+      flex-direction: column;
+      row-gap: getRem(20);
+
+      &-attractions {
+        display: flex;
+        flex-direction: column;
+        row-gap: getRem(20);
+      }
+    }
+
+    &-detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &-status-chip {
+      width: getRem(100);
+      height: getRem(30);
+      border-radius: getRem(15);
+      font-weight: bold;
+      font-size: getRem(14);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &-success {
+        @extend .profile-excursions-status-chip;
+        background-color: $backgroundColorDarker;
+      }
+
+      &-new {
+        @extend .profile-excursions-status-chip;
+        background-color: lightskyblue;
+        width: getRem(200);
+      }
+
+      &-failed {
+        @extend .profile-excursions-status-chip;
+        background-color: red;
+        width: getRem(170);
+      }
+    }
+
     &-book-popup {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
       row-gap: getRem(20);
+      width: getRem(350);
+
+      &-spinner {
+        margin: 0 40%;
+      }
     }
 
     &-book-button-container {
@@ -352,5 +403,158 @@
       }
     }
 
+  }
+
+  &-photos-carousel {
+    height: getRem(200);
+    column-gap: getRem(20);
+
+    &-item {
+      width: getRem(150);
+      height: getRem(170);
+      flex-basis: getRem(150);
+
+      &-card {
+        height: getRem(170) !important;
+
+        & > img {
+          width: 100%;
+          height: getRem(150) !important;
+        }
+      }
+
+      .carousel-container {
+        height: initial !important;
+      }
+    }
+  }
+
+  &-attraction-detail {
+    &-image {
+      width: 50%;
+      height: 50%;
+      margin: 0 auto;
+      box-shadow: getRem(5) getRem(5) getRem(20) $boxShadow;
+    }
+
+    &-amount-and-currency {
+      display: flex;
+      column-gap: getRem(20);
+      align-items: center;
+      width: 100%;
+    }
+
+    &-feedback {
+      &-content {
+        margin-top: getRem(20);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        row-gap: getRem(20);
+      }
+
+      &-btn {
+        width: getRem(140);
+        margin: 0 35%;
+      }
+
+      &-container {
+        display: flex;
+        flex-direction: column;
+        row-gap: getRem(20);
+        align-items: center;
+        width: 100%;
+        max-height: getRem(300);
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding-bottom: getRem(20);
+      }
+
+      &-card {
+        width: 100%;
+        height: getRem(150);
+        border-radius: getRem(20);
+        background-color: $contentText;
+        box-shadow: getRem(4) getRem(4) getRem(20) $boxShadow;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: getRem(30) getRem(15);
+        row-gap: getRem(10);
+
+        &:hover {
+          box-shadow: getRem(15) getRem(15) getRem(10) $boxShadow;
+          transition: box-shadow 0.3s ease-out;
+        }
+
+        &-content {
+          display: flex;
+          column-gap: getRem(20);
+
+          & > img {
+            width: getRem(40);
+            height: getRem(40);
+          }
+
+          & > div {
+            font-size: getRem(12);
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+
+            & > p {
+              color: $disabled;
+              font-weight: initial;
+              width: getRem(300);
+              text-align: justify-all;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &-custom-expenses {
+    &-card {
+      width: 100%;
+      height: getRem(100);
+      border-radius: getRem(10);
+      background-color: $contentText;
+      box-shadow: getRem(4) getRem(4) getRem(20) $boxShadow;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: getRem(30) getRem(15);
+      row-gap: getRem(5);
+      position: relative;
+
+      &-title {
+        font-size: getRem(12);
+        font-weight: bold;
+      }
+
+      &-category {
+        font-size: getRem(12);
+        color: $disabled;
+        font-weight: bold;
+      }
+
+      &-description {
+        font-size: getRem(11);
+        color: $disabled;
+      }
+    }
+
+    &-button-container {
+      display: flex;
+      margin: getRem(20) 20%;
+      column-gap: getRem(20);
+    }
+
+    &-form {
+      display: flex;
+      flex-direction: column;
+      row-gap: getRem(10);
+    }
   }
 }

@@ -7,8 +7,19 @@
     font-size: getRem(9);
   }
 
-  &-messages{
+  &-file {
+    & button {
+      width: getRem(120);
+
+    }
+  }
+
+  &-messages {
     padding-left: getRem(15);
+  }
+
+  &-file {
+    font-size: getRem(10);
   }
 
   &-text {
@@ -79,9 +90,15 @@ input[type="text"] {
   background-image: url("@/assets/images/user.svg");
 }
 
-input[type="number"]{
+input[type="number"] {
   padding-left: getRem(20);
   padding-right: getRem(10);
+}
+
+textarea {
+  height: getRem(100) !important;
+  padding-top: getRem(10);
+  font-size: getRem(10);
 }
 
 input[type="checkbox"] {

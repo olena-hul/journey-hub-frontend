@@ -1,27 +1,38 @@
 <template>
   <div class="profile-trip-detail">
     <div class="profile-trip-detail-header">
-      <img :src="BackIcon" alt="Back icon" @click="onBackClick" />
+      <img :src="BackIcon" alt="Back icon" @click="onBackBtnClick" />
       <h3>{{ this.tripsStore.excursion?.name }}</h3>
+    </div>
+    <div class="profile-excursions-detail-header">
+      <div class="profile-right-aside-profile">
+        <img :src="Customer3" alt="Profile image" />
+        <div class="profile-right-aside-profile-name">
+          <span>
+            {{ this.tripsStore.excursion?.guide.first_name }}
+            {{ this.tripsStore.excursion?.guide.last_name }}</span
+          >
+          <span> Guide </span>
+        </div>
+      </div>
+      <BookingStatus
+        v-if="usersBooking"
+        :status="usersBooking.payment_status"
+      />
     </div>
     <div class="profile-my-trips-carousel-item-dates">
       <img :src="Calendar" alt="calendar icon" />
-      <span
-        >{{ formatDateDDMM(this.tripsStore.excursion?.date as string) }}
-      </span>
+      <span>{{ formatDate(new Date(this.tripsStore.excursion?.date)) }} </span>
     </div>
-    <div class="profile-excursions-images-container">
-      <img
-        :key="url"
-        v-for="url in this.tripsStore.excursion?.excursion_attractions
+    <PhotosCarousel
+      title="View excursion attractions"
+      :image_urls="
+        this.tripsStore.excursion?.excursion_attractions
           ?.at(0)
-          .attraction.image_urls.slice(0, 3)"
-        class="profile-excursions-detail-image"
-        :src="url"
-        alt="Destination image"
-      />
-    </div>
-    <h4>Attractions</h4>
+          .attraction.image_urls.slice(0, 3)
+      "
+    />
+    <h4>Attractions to visit</h4>
     <ExcursionAttraction
       v-for="attraction in this.tripsStore.excursion?.excursion_attractions"
       :excursion-attraction="attraction"
@@ -29,9 +40,14 @@
     />
   </div>
   <div class="profile-excursions-book-button-container">
-    <PrimaryButton> Book</PrimaryButton>
+    <PrimaryButton v-if="!usersBooking" @click="isBookingPopupOpen = true">
+      Book
+    </PrimaryButton>
   </div>
-  <BookExcursionPopup :is-open="true" />
+  <BookExcursionPopup
+    :is-open="isBookingPopupOpen"
+    :on-close="() => (isBookingPopupOpen = false)"
+  />
 </template>
 
 <script lang="ts">
@@ -44,14 +60,24 @@ import { usePlanningStore } from "@/pages/Planning/store/planning";
 import { parseDate } from "@/common/utils";
 import { useTripsStore } from "@/pages/Profile/store/trips";
 import Calendar from "@/assets/images/CalendarGrey.svg";
-import { formatDateDDMM } from "@/pages/Planning/utils";
+import { formatDate, formatDateDDMM } from "@/pages/Planning/utils";
 import ExcursionAttraction from "@/pages/Profile/sections/Excursions/components/ExcursionAttraction.vue";
 import PrimaryButton from "@/common/components/Buttons/PrimaryButton.vue";
 import BookExcursionPopup from "@/pages/Profile/sections/Excursions/components/BookingPopup.vue";
+import Customer3 from "@/assets/images/Customer3.png";
+import PhotosCarousel from "@/pages/Profile/components/PhotosCarousel.vue";
+import BookingStatus from "@/pages/Profile/sections/Excursions/components/BookingStatus.vue";
+import type { ExcursionBooking } from "@/pages/Profile/api";
 
 export default defineComponent({
   name: "ExcursionDetail",
-  components: { BookExcursionPopup, PrimaryButton, ExcursionAttraction },
+  components: {
+    BookingStatus,
+    PhotosCarousel,
+    BookExcursionPopup,
+    PrimaryButton,
+    ExcursionAttraction,
+  },
   data() {
     return {
       BackIcon,
@@ -59,20 +85,39 @@ export default defineComponent({
       Pencil,
       Calendar,
       destinationStore: useDestinationStore(),
-      isBudgetPopupOpen: false,
+      isBookingPopupOpen: false,
       planningStore: usePlanningStore(),
       tripsStore: useTripsStore(),
+      Customer3,
     };
   },
   props: {
     onBackClick: Function,
   },
   methods: {
+    formatDate,
     formatDateDDMM,
     parseDate,
+    onBackBtnClick() {
+      this.tripsStore.booking = null;
+      this.onBackClick && this.onBackClick();
+    },
   },
-  computed: {},
-  watch: {},
+  computed: {
+    usersBooking(): ExcursionBooking | undefined {
+      return (
+        this.tripsStore.booking ||
+        this.tripsStore.excursionBookings
+          .filter(
+            (booking) =>
+              booking.excursion.id === this.tripsStore.excursion?.id &&
+              (booking.payment_status === "success" ||
+                booking.payment_status === "new")
+          )
+          .at(0)
+      );
+    },
+  },
 });
 </script>
 

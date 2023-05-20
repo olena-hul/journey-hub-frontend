@@ -1,29 +1,32 @@
 import { defineStore } from "pinia";
 import { auth } from "@/firebase/config";
 import {
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { getUser, register } from "@/pages/Home/api";
 import type {
-  SignInInput,
   BaseSignUpInput,
+  SignInInput,
   SignUpInputGoogleAuth,
 } from "@/pages/Home/api";
+import { getUser, register } from "@/pages/Home/api";
 import * as firebase from "firebase/app";
-import { GoogleAuthProvider } from "firebase/auth";
 import type { APIResponse } from "@/common/interfaces";
 import router from "@/router";
 import { LOCALSTORAGE_KEYS } from "@/common/constants";
+import { updateUser } from "@/pages/Profile/api";
 
-interface User {
+export interface User {
   id: number;
   first_name: string;
   last_name: string;
   email: string;
   role: string;
+  password: string | undefined;
 }
+
 interface AuthState {
   user: User | null;
 }
@@ -119,6 +122,10 @@ export const useAuthStore = defineStore({
         }
         console.log(error);
       }
+    },
+    async updateUser(body: any) {
+      const res = await updateUser(body);
+      this.user = res.data;
     },
   },
 });

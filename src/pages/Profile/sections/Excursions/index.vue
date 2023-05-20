@@ -3,13 +3,21 @@ import { defineComponent } from "vue";
 import MyExcursionsCarousel from "@/pages/Profile/sections/Excursions/components/MyExcursionsCarousel.vue";
 import ExcursionCard from "@/pages/Profile/sections/Excursions/components/ExcursionCard.vue";
 import { useTripsStore } from "@/pages/Profile/store/trips";
+import PrimaryButton from "@/common/components/Buttons/PrimaryButton.vue";
+import CreateExcursionPopup from "@/pages/Profile/sections/Excursions/components/CreateExcursionPopup.vue";
 
 export default defineComponent({
   name: "my-excursions",
-  components: { ExcursionCard, MyExcursionsCarousel },
+  components: {
+    CreateExcursionPopup,
+    PrimaryButton,
+    ExcursionCard,
+    MyExcursionsCarousel,
+  },
   data() {
     return {
       tripsStore: useTripsStore(),
+      createPopupOpen: false,
     };
   },
   props: {
@@ -20,8 +28,11 @@ export default defineComponent({
 
 <template>
   <h3>My excursions🏝</h3>
-  <MyExcursionsCarousel />
-  <h4>Explore new</h4>
+  <MyExcursionsCarousel :on-view-click="onViewClick" />
+  <div class="profile-excursions-detail-header">
+    <h4>Explore new</h4>
+    <PrimaryButton @click="createPopupOpen = true"> Create</PrimaryButton>
+  </div>
   <div class="profile-excursions-cards-container">
     <ExcursionCard
       :on-view-click="onViewClick"
@@ -30,5 +41,9 @@ export default defineComponent({
       :excursion="excursion"
     />
   </div>
+  <CreateExcursionPopup
+    :is-open="createPopupOpen"
+    :on-close="() => (createPopupOpen = false)"
+  />
 </template>
 <style scoped></style>

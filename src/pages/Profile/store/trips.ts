@@ -3,20 +3,31 @@ import type { Attraction, Budget, Trip } from "@/pages/Planning/api";
 import { createTripAttractions, getMyTrips } from "@/pages/Planning/api";
 import type { Destination } from "@/pages/Home/api";
 import type {
+  CreateExcursion,
+  CustomExpenseInput,
   Excursion,
   ExcursionBooking,
   ExcursionBookingInput,
+  RateInput,
   TripAttraction,
   TripDetail,
+  UpdateTripAttractionInput,
 } from "@/pages/Profile/api";
 import {
   createBooking,
+  createCustomExpense,
+  createExcursion,
+  createRate,
   getDaysInTrip,
   getExcursionBookings,
   getExcursions,
+  getTripAttraction,
   getTripDetail,
   getTripExpenses,
   getVisitedPlaces,
+  imageUpload,
+  removeCustomExpense,
+  updateTripAttraction,
 } from "@/pages/Profile/api";
 import type { MyObject } from "@/common/interfaces";
 import { convertCurrency, planTrip } from "@/pages/Planning/utils";
@@ -36,6 +47,8 @@ interface TripsState {
   excursions: Excursion[];
   excursion: Excursion | null;
   booking: ExcursionBooking | null;
+  activeAttraction: TripAttraction | null;
+  customExpenseFormVisible: boolean;
 }
 
 export const useTripsStore = defineStore({
@@ -55,6 +68,8 @@ export const useTripsStore = defineStore({
       excursions: [],
       excursion: null,
       booking: null,
+      activeAttraction: null,
+      customExpenseFormVisible: false,
     } as TripsState),
 
   actions: {
@@ -90,6 +105,39 @@ export const useTripsStore = defineStore({
     },
     getPlannedTrip(selectedDates: Date[]) {
       this.plannedTrip = planTrip(selectedDates, this.plannedTrip);
+    },
+    async imageUpload(file: any, attraction: any, user: any) {
+      await imageUpload(file, attraction, user);
+      await getTripDetail(this.trip?.id as number);
+      const res = await getTripAttraction(this.activeAttraction?.id as number);
+      this.activeAttraction = res.data;
+    },
+    async rateCreate(body: RateInput) {
+      await createRate(body);
+      await getTripDetail(this.trip?.id as number);
+      const res = await getTripAttraction(this.activeAttraction?.id as number);
+      this.activeAttraction = res.data;
+    },
+    async customExpenseCreate(body: CustomExpenseInput) {
+      await createCustomExpense(body);
+      await this.getTripDetail(this.trip?.id as number);
+    },
+    async customExpenseRemove(id: number) {
+      await removeCustomExpense(id);
+      await this.getTripDetail(this.trip?.id as number);
+    },
+    async updateTripAttraction(body: UpdateTripAttractionInput) {
+      const res = await updateTripAttraction(
+        this.activeAttraction?.id as number,
+        body
+      );
+      this.activeAttraction = res.data;
+      await getTripDetail(this.trip?.id as number);
+    },
+
+    async createExcursion(body: CreateExcursion) {
+      await createExcursion(body);
+      await this.getExcursions();
     },
     async createTripAttraction(date: string, attraction: Attraction) {
       if (!this.trip || this.trip?.id === null) {
@@ -185,10 +233,13 @@ export const useTripsStore = defineStore({
       );
 
       customExpenses.map((customExpense) => {
-        actualExpenses[customExpense.budget_category] += customExpense.price;
+        actualExpenses[customExpense.budget_category] += Number(
+          customExpense.price
+        );
       });
 
       this.actualExpenses = Object.values(actualExpenses);
+      console.log(actualExpenses);
     },
   },
 });

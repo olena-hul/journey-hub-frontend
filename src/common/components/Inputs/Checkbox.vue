@@ -1,6 +1,6 @@
 <template>
   <label class="inputs-checkbox-label">
-    <input type="checkbox" :checked="checked" />
+    <input @click="onClick" type="checkbox" :checked="checked" />
     <span class="checkmark">{{ labelText }}</span>
   </label>
 </template>
@@ -13,6 +13,7 @@ export default {
   props: {
     checked: Boolean,
     labelText: String,
+    onClick: Function,
   },
 };
 </script>

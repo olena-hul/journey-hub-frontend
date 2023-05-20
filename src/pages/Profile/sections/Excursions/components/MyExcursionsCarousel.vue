@@ -28,7 +28,9 @@
           <span>{{ formatDateDDMM(booking.excursion.date as string) }} </span>
         </div>
         <div class="profile-my-trips-carousel-item-button">
-          <PrimaryButton> View</PrimaryButton>
+          <PrimaryButton @click="() => onBookingClick(booking)">
+            View
+          </PrimaryButton>
         </div>
       </div>
     </CarouselItem>
@@ -45,6 +47,7 @@ import PrimaryButton from "@/common/components/Buttons/PrimaryButton.vue";
 import { usePlanningStore } from "@/pages/Planning/store/planning";
 import { useTripsStore } from "@/pages/Profile/store/trips";
 import { formatDateDDMM } from "@/pages/Planning/utils";
+import type { ExcursionBooking } from "@/pages/Profile/api";
 
 export default defineComponent({
   name: "my-excursions-carousel",
@@ -60,6 +63,11 @@ export default defineComponent({
   },
   methods: {
     formatDateDDMM,
+    onBookingClick(booking: ExcursionBooking) {
+      this.tripsStore.excursion = booking.excursion;
+      this.tripsStore.booking = booking;
+      this.onViewClick && this.onViewClick();
+    },
   },
 });
 </script>

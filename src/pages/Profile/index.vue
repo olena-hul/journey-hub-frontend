@@ -44,7 +44,7 @@
       <div class="profile-right-aside-profile">
         <img :src="Customer3" alt="Profile image" />
         <div class="profile-right-aside-profile-name">
-          <span> Olena </span>
+          <span> {{ authStore.user?.first_name }} </span>
           <span> Travel enthusiast</span>
         </div>
       </div>

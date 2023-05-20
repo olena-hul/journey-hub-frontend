@@ -88,6 +88,10 @@ export const usePlanningStore = defineStore({
     },
 
     async createBudget(body: BudgetInput) {
+      if (!this.trip) {
+        return;
+      }
+      body.trip = this.trip.id;
       const budget = await createBudget(body);
       this.budget = budget.data;
     },

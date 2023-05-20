@@ -1,3 +1,11 @@
+<script setup lang="ts">
+interface Props {
+  excursion: Excursion;
+  onViewClick: typeof Function;
+}
+
+defineProps<Props>();
+</script>
 <script lang="ts">
 import { defineComponent } from "vue";
 import Customer3 from "@/assets/images/Customer3.png";
@@ -11,7 +19,6 @@ export default defineComponent({
   name: "ExcursionCard",
   components: { PrimaryButton },
   props: {
-    excursion: Object,
     onViewClick: Function,
   },
   data() {
@@ -23,8 +30,8 @@ export default defineComponent({
   },
   methods: {
     formatDateDDMM,
-    onExcursionClick() {
-      this.tripsStore.excursion = this.excursion as Excursion;
+    onExcursionClick(excursion: Excursion) {
+      this.tripsStore.excursion = excursion;
       this.onViewClick && this.onViewClick();
     },
   },
@@ -45,7 +52,10 @@ export default defineComponent({
       <div class="profile-right-aside-profile">
         <img :src="Customer3" alt="Profile image" />
         <div class="profile-right-aside-profile-name">
-          <span> Olena </span>
+          <span>
+            {{ excursion.guide.first_name }}
+            {{ excursion.guide.last_name }}</span
+          >
           <span> Guide </span>
         </div>
       </div>
@@ -56,10 +66,14 @@ export default defineComponent({
     </div>
     <div class="profile-excursions-card-right">
       <img
-        :src="excursion.excursion_attractions.at(0).attraction.image_urls.at(0)"
+        :src="
+          excursion.excursion_attractions.at(0)?.attraction.image_urls.at(0)
+        "
         alt="Excursion image"
       />
-      <PrimaryButton @click="onExcursionClick">View more</PrimaryButton>
+      <PrimaryButton @click="() => onExcursionClick(excursion)"
+        >View more
+      </PrimaryButton>
     </div>
   </div>
 </template>

@@ -3,6 +3,8 @@ import Home from "@/pages/Home/index.vue";
 import Profile from "@/pages/Profile/index.vue";
 import { isAuthenticated } from "@/common/utils";
 import Planning from "@/pages/Planning/index.vue";
+import SuccessPayment from "@/pages/Payment/SuccessPayment.vue";
+import FailedPayment from "@/pages/Payment/FailedPayment.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +25,18 @@ const router = createRouter({
       path: "/plan",
       name: "Plan",
       component: Planning,
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/payment/success",
+      name: "Successful payment",
+      component: SuccessPayment,
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/payment/fail",
+      name: "Failed payment",
+      component: FailedPayment,
       meta: { requiresAuth: false },
     },
   ],

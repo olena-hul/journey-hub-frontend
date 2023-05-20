@@ -55,6 +55,10 @@ async function put(url: string, { params = {}, headers = {}, body = {} }) {
   return request(url, "put", params, headers, body);
 }
 
+async function patch(url: string, { params = {}, headers = {}, body = {} }) {
+  return request(url, "patch", params, headers, body);
+}
+
 async function remove(url: string, { params = {}, headers = {}, body = {} }) {
   return request(url, "delete", params, headers, body);
 }
@@ -63,5 +67,6 @@ export default {
   get,
   post,
   put,
+  patch,
   remove,
 };

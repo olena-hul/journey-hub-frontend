@@ -55,13 +55,12 @@ export function formatDateToBackendFormat(date: Date) {
 }
 
 const CURRENCY_MAPPING_USD: MyObject = {
-  $: 1,
   "₴": 38,
   "€": 0.98,
 };
 
 export const convertCurrency = (target: string, amount: number) => {
-  const rate = CURRENCY_MAPPING_USD[target];
+  const rate = target === "$" ? 1 : CURRENCY_MAPPING_USD[target];
   return amount * rate;
 };
 

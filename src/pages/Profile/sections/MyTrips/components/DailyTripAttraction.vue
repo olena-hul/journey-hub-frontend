@@ -12,37 +12,30 @@
     <div
       :key="tripAttraction.date"
       v-for="tripAttraction in tripAttractions"
-      class="planning-daily-activity-card"
+      :class="
+        tripAttraction.visited
+          ? 'planning-daily-activity-card-visited'
+          : 'planning-daily-activity-card'
+      "
     >
       <img
         :src="Museum"
         alt="Attraction icon"
         class="planning-daily-activity-card-icon"
       />
-      <div class="planning-daily-activity-card-center">
+      <div
+        @click="() => onTripAttractionClick(tripAttraction)"
+        class="planning-daily-activity-card-center"
+      >
         <div class="planning-daily-activity-card-center-header">
           <h6>{{ tripAttraction.attraction.name }}</h6>
-          <img
-            alt="Pencil"
-            :src="Pencil"
-            class="planning-heading-date-form-pencil-icon"
-            @click="editTripAttractionPopupOpen = true"
-          />
         </div>
         <div class="planning-daily-activity-card-center-details">
           <img :src="Clock" alt="clock icon" />
           <span> {{ tripAttraction.attraction.duration }} hours </span>
           <img :src="Price" alt="price icon" />
           <span>
-            {{
-              tripAttraction.currency ===
-              this.tripsStore.trip?.budgets.at(0)?.currency
-                ? tripAttraction.price
-                : convertCurrency(
-                    this.tripsStore.trip?.budgets.at(0)?.currency || "$",
-                    tripAttraction.price
-                  )
-            }}
+            {{ tripAttraction.price }}
             {{
               tripAttraction.currency ||
               this.tripsStore.trip?.budgets.at(0)?.currency ||
@@ -148,6 +141,11 @@ export default defineComponent({
       removeTripAttraction(attraction.id);
       this.tripsStore.calculateExpenses();
     },
+    onTripAttractionClick(attraction: TripAttraction) {
+      this.tripsStore.activeAttraction = attraction;
+      this.onAttractionClick && this.onAttractionClick();
+      window.scrollTo(0, 0);
+    },
   },
   computed: {
     trip() {
@@ -164,6 +162,7 @@ export default defineComponent({
       required: false,
       type: String,
     },
+    onAttractionClick: Function,
   },
   data: () => ({
     Museum,

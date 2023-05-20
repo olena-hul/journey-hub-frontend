@@ -128,13 +128,14 @@ import BudgetPopup from "@/pages/Planning/components/BudgetPopup.vue";
 import { usePlanningStore } from "@/pages/Planning/store/planning";
 import { useAuthStore } from "@/pages/Home/store/auth";
 import DatePicker from "@/common/components/DatePicker/index.vue";
-import { parseDate } from "@/common/utils";
+import { isAuthenticated, parseDate } from "@/common/utils";
 import Spinner from "vue-spinner-component/src/Spinner.vue";
 import BudgetChart from "@/pages/Planning/components/BudgetChart.vue";
 import AlertComponent from "@/common/components/Alerts/index.vue";
 import SignInForm from "@/pages/Home/components/SignInForm.vue";
 import SignUpForm from "@/pages/Home/components/SignUpForm.vue";
 import TripLoader from "@/pages/Planning/components/TripLoader.vue";
+import { useTripsStore } from "@/pages/Profile/store/trips";
 
 export default defineComponent({
   name: "planning-page",
@@ -172,6 +173,7 @@ export default defineComponent({
     isSignUpOpen: false,
     saveClicked: false,
     loading: false,
+    tripsStore: useTripsStore(),
   }),
   methods: {
     parseDate,
@@ -245,7 +247,7 @@ export default defineComponent({
     async onSaveClicked() {
       this.saveClicked = true;
 
-      if (!this.authStore.currentUser) {
+      if (!isAuthenticated()) {
         this.openLoginPopup();
         return;
       }
@@ -256,6 +258,7 @@ export default defineComponent({
       await this.planningStore.createTripAttractions();
       this.alertMessage = "Your trip was successfully saved";
       setTimeout(() => {
+        this.tripsStore.getMyTrips();
         this.alertMessage = null;
         router.push("/");
       }, 2000);
