@@ -298,6 +298,14 @@
       align-items: center;
     }
 
+    &-status-container {
+      display: flex;
+      flex-direction: column;
+      row-gap: getRem(10);
+      align-items: center;
+
+    }
+
     &-status-chip {
       width: getRem(100);
       height: getRem(30);
@@ -315,7 +323,6 @@
 
       &-new {
         @extend .profile-excursions-status-chip;
-        background-color: lightskyblue;
         width: getRem(200);
       }
 

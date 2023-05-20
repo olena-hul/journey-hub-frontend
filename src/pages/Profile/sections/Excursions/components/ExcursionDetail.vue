@@ -15,11 +15,19 @@
           <span> Guide </span>
         </div>
       </div>
-      <BookingStatus
-        v-if="usersBooking"
-        :status="usersBooking.payment_status"
-      />
+      <div class="profile-excursions-status-container">
+        <BookingStatus
+          v-if="usersBooking"
+          :status="usersBooking.payment_status"
+        />
+        <PrimaryButton
+          v-if="usersBooking?.payment_status === 'new'"
+          @click="onPayClick"
+          >Pay
+        </PrimaryButton>
+      </div>
     </div>
+
     <div class="profile-my-trips-carousel-item-dates">
       <img :src="Calendar" alt="calendar icon" />
       <span>{{ formatDate(new Date(this.tripsStore.excursion?.date)) }} </span>
@@ -102,6 +110,10 @@ export default defineComponent({
       this.tripsStore.booking = null;
       this.onBackClick && this.onBackClick();
     },
+    onPayClick() {
+      window.location.href =
+        this.tripsStore.booking?.session_url || window.location.href;
+    },
   },
   computed: {
     usersBooking(): ExcursionBooking | undefined {
@@ -111,7 +123,7 @@ export default defineComponent({
           .filter(
             (booking) =>
               booking.excursion.id === this.tripsStore.excursion?.id &&
-              (booking.payment_status === "success" ||
+              (booking.payment_status === "paid" ||
                 booking.payment_status === "new")
           )
           .at(0)

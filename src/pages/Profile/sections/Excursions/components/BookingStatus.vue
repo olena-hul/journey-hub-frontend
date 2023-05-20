@@ -10,7 +10,7 @@ export default defineComponent({
   data() {
     return {
       statuses: {
-        success: {
+        paid: {
           title: "Paid",
           className: "success",
         },
