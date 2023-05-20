@@ -166,6 +166,7 @@ export default {
     planningBudget(newValue) {
       if (newValue) {
         this.budget = {
+          id: newValue.id,
           amount: newValue.amount,
           currency: newValue.currency,
           entries: newValue.entries,
@@ -175,6 +176,7 @@ export default {
     tripBudget(newValue) {
       if (newValue) {
         this.budget = {
+          id: newValue.id,
           amount: newValue.amount,
           currency: newValue.currency,
           entries: newValue.entries,

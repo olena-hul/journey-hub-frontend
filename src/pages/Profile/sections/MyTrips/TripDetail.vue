@@ -17,8 +17,8 @@
     />
     <div class="profile-trip-detail-budget">
       <h3>
-        Your budget - {{ this.budget?.amount }}
-        {{ this.budget?.currency }}
+        Your budget - {{ this.budget?.amount || 0 }}
+        {{ this.budget?.currency || "$" }}
       </h3>
       <img
         @click="() => (isBudgetPopupOpen = true)"

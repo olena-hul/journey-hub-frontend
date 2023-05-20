@@ -104,6 +104,7 @@ export const useTripsStore = defineStore({
       ];
     },
     getPlannedTrip(selectedDates: Date[]) {
+      console.log("heehehheje");
       this.plannedTrip = planTrip(selectedDates, this.plannedTrip);
     },
     async imageUpload(file: any, attraction: any, user: any) {
@@ -239,7 +240,6 @@ export const useTripsStore = defineStore({
       });
 
       this.actualExpenses = Object.values(actualExpenses);
-      console.log(actualExpenses);
     },
   },
 });
