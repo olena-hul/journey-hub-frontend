@@ -9,6 +9,8 @@ import { useAuthStore } from "@/pages/Home/store/auth";
 import { getUser } from "@/pages/Home/api";
 import { usePlanningStore } from "@/pages/Planning/store/planning";
 import { groupActivities } from "@/common/utils";
+import { API_HOST } from "@/common/constants";
+
 export default {
   name: "App",
   data() {
@@ -18,7 +20,7 @@ export default {
   },
   created: function () {
     console.log("Starting connection to WebSocket Server");
-    this.connection = new WebSocket("ws://localhost:8000/ws/");
+    this.connection = new WebSocket(`ws://${API_HOST}:8000/ws/`);
 
     this.connection.onmessage = function (event) {
       const store = usePlanningStore();
