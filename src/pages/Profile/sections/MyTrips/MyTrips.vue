@@ -26,21 +26,38 @@ export default defineComponent({
     },
   },
   mounted() {
-    navigator.geolocation.getCurrentPosition((location) => {
-      const loader = new Loader({
-        apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-        version: "quarterly",
-      });
+    navigator.geolocation.getCurrentPosition(
+      (location) => {
+        const loader = new Loader({
+          apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+          version: "quarterly",
+        });
 
-      loader.load().then(() => {
-        this.map = this.mapHook.initMap(
-          location.coords.latitude,
-          location.coords.longitude,
-          "visited-places-map",
-          5
-        ) as any;
-      });
-    });
+        loader.load().then(() => {
+          this.map = this.mapHook.initMap(
+            location.coords.latitude,
+            location.coords.longitude,
+            "visited-places-map",
+            5
+          ) as any;
+        });
+      },
+      () => {
+        const loader = new Loader({
+          apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+          version: "quarterly",
+        });
+
+        loader.load().then(() => {
+          this.map = this.mapHook.initMap(
+            49.842957,
+            24.031111,
+            "visited-places-map",
+            3
+          ) as any;
+        });
+      }
+    );
   },
   watch: {
     visitedPlaces(newValue) {
